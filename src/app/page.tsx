@@ -2,7 +2,9 @@ import { About } from "@/components/About";
 import { Blog } from "@/components/Blog";
 import { Contact } from "@/components/Contact";
 import { Experience } from "@/components/Experince";
+import { GitHubActivity } from "@/components/GithubActivity";
 import { Hero } from "@/components/Hero";
+import { LeetCodeActivity } from "@/components/LeetCodeActivity";
 import { Navigation } from "@/components/Navigation";
 import { Projects } from "@/components/Projects";
 import { Skills } from "@/components/Skills";
@@ -17,6 +19,8 @@ export default function Home() {
       <Projects />
       <Experience />
       <Blog />
+      <LeetCodeActivity />
+      <GitHubActivity />
       <Contact />
       
       {/* Footer */}
