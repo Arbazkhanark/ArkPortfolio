@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { X, Moon, Sun, Monitor } from "lucide-react";
+import { useTheme } from "@/components/ThemeProvider";
 
 const commands = {
   help: `Available commands:
@@ -12,6 +13,7 @@ const commands = {
   - projects : See my featured projects
   - experience: View my work experience
   - contact  : Get my contact information
+  - theme    : Change theme (light/dark/system)
   - clear    : Clear the terminal
   - exit     : Return to main site`,
   
@@ -62,6 +64,12 @@ Phone: +91 8287817916
 GitHub: github.com/Arbazkhanark
 LinkedIn: linkedin.com/in/arbaz-khan-0bb1aa1a0
 Location: New Delhi, India`,
+
+  theme: `Theme Commands:
+  - theme light : Switch to light mode
+  - theme dark  : Switch to dark mode
+  - theme system: Use system preference
+  Current theme: `
 };
 
 export default function Terminal() {
@@ -71,13 +79,14 @@ export default function Terminal() {
   const [historyIndex, setHistoryIndex] = useState(-1);
   const terminalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const welcomeMessage = `Arbaaz Khan — PORTFOLIO v2.0
 Software Engineer | Full Stack Developer
 
 Welcome to my interactive terminal!
-Type 'help' to see available commands or 'about' to learn more about me.`;
+Type &apos;help&apos; to see available commands or &apos;about&apos; to learn more about me.`;
     setHistory([welcomeMessage]);
     inputRef.current?.focus();
   }, []);
@@ -111,11 +120,25 @@ Type 'help' to see available commands or 'about' to learn more about me.`;
       return;
     }
 
+    if (trimmedCmd.startsWith("theme ")) {
+      const themeArg = trimmedCmd.split(" ")[1];
+      if (themeArg === "light" || themeArg === "dark" || themeArg === "system") {
+        setTheme(themeArg);
+        setHistory((prev) => [...prev, `Theme set to ${themeArg}`]);
+      } else {
+        setHistory((prev) => [...prev, `Invalid theme: ${themeArg}. Use light/dark/system`]);
+      }
+      return;
+    }
+
     if (trimmedCmd in commands) {
-      const response = commands[trimmedCmd as keyof typeof commands];
+      let response = commands[trimmedCmd as keyof typeof commands];
+      if (trimmedCmd === "theme") {
+        response += theme;
+      }
       setHistory((prev) => [...prev, response]);
     } else {
-      setHistory((prev) => [...prev, `Command not found: ${cmd}\nType 'help' for available commands.`]);
+      setHistory((prev) => [...prev, `Command not found: ${cmd}\nType &apos;help&apos; for available commands.`]);
     }
   };
 
@@ -156,26 +179,44 @@ Type 'help' to see available commands or 'about' to learn more about me.`;
     }
   };
 
+  const getThemeIcon = () => {
+    switch (theme) {
+      case "dark": return <Moon className="w-4 h-4" />;
+      case "light": return <Sun className="w-4 h-4" />;
+      default: return <Monitor className="w-4 h-4" />;
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-black text-green-400 p-4 font-mono">
+    <div className="min-h-screen bg-background text-foreground p-4 font-mono transition-colors duration-300">
       <div className="container mx-auto max-w-4xl">
-        <div className="mb-4 flex items-center justify-between border-2 border-green-500 p-2 rounded">
+        <div className="mb-4 flex items-center justify-between border-2 border-primary p-2 rounded">
           <span className="text-sm">arbaazkhan.vercel.app/terminal</span>
-          <Button 
-            size="sm" 
-            variant="ghost" 
-            asChild
-            className="text-green-400 hover:text-red-500 hover:bg-transparent"
-          >
-            <Link href="/">
-              <X className="w-4 h-4" />
-            </Link>
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button 
+              size="sm" 
+              variant="ghost" 
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+              className="text-foreground hover:bg-primary/10"
+            >
+              {getThemeIcon()}
+            </Button>
+            <Button 
+              size="sm" 
+              variant="ghost" 
+              asChild
+              className="text-foreground hover:text-destructive hover:bg-transparent"
+            >
+              <Link href="/">
+                <X className="w-4 h-4" />
+              </Link>
+            </Button>
+          </div>
         </div>
 
         <div 
           ref={terminalRef}
-          className="border-2 border-green-500 rounded p-4 h-[70vh] overflow-y-auto mb-4 bg-black/50 backdrop-blur-sm"
+          className="border-2 border-primary rounded p-4 h-[70vh] overflow-y-auto mb-4 bg-card/50 backdrop-blur-sm"
           onClick={() => inputRef.current?.focus()}
         >
           {history.map((line, index) => (
@@ -184,21 +225,21 @@ Type 'help' to see available commands or 'about' to learn more about me.`;
             </div>
           ))}
           <form onSubmit={handleSubmit} className="flex items-center gap-2 mt-2">
-            <span className="text-green-400">$</span>
+            <span className="text-primary">$</span>
             <input
               ref={inputRef}
               type="text"
               value={currentCommand}
               onChange={(e) => setCurrentCommand(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="flex-1 bg-transparent outline-none border-none text-green-400 caret-green-400 placeholder-green-400/50"
+              className="flex-1 bg-transparent outline-none border-none text-foreground caret-primary placeholder-muted-foreground"
               placeholder="Type a command..."
               autoFocus
             />
           </form>
         </div>
 
-        <div className="mt-4 text-xs text-green-400/60">
+        <div className="mt-4 text-xs text-muted-foreground">
           Use ↑↓ for command history • Tab for autocomplete • Type &apos;help&apos; for commands
         </div>
       </div>
