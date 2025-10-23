@@ -53,13 +53,13 @@ const AnimatedProgress = ({ value, className }: { value: number; className?: str
       <motion.div
         initial={{ width: 0 }}
         animate={isInView ? { width: `${value}%` } : { width: 0 }}
-        transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
-        className="h-full bg-primary rounded-full relative overflow-hidden"
+        transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
+        className="h-full bg-green-600 rounded-full relative overflow-hidden"
       >
         {/* Shimmer Effect */}
         <motion.div
           animate={{ x: ["0%", "100%"] }}
-          transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+          transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 3 }}
           className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
         />
       </motion.div>
@@ -69,193 +69,98 @@ const AnimatedProgress = ({ value, className }: { value: number; className?: str
 
 export const Skills = () => {
   const containerRef = useRef(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const categoryVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 50,
-      scale: 0.8
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const skillItemVariants = {
-    hidden: { 
-      opacity: 0, 
-      x: -20 
-    },
-    visible: (i: number) => ({
-      opacity: 1,
-      x: 0,
-      transition: {
-        delay: i * 0.1,
-        duration: 0.5
-      }
-    })
-  };
-
-  const titleVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: -20 
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
-  };
+  const isInView = useInView(containerRef, { once: true, margin: "-50px" });
 
   return (
-    <section id="skills" className="py-20 px-4 bg-secondary/20" ref={containerRef}>
+    <section id="skills" className="py-8 px-4 bg-blue-50 dark:bg-blue-950/20" ref={containerRef}>
       <div className="container mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-8"
         >
-          <motion.h2 
-            className="text-4xl sm:text-5xl font-bold mb-4"
-            initial={{ opacity: 0, scale: 0.5 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            Skills & Technologies
-          </motion.h2>
-          <motion.p 
-            className="text-lg text-muted-foreground"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            viewport={{ once: true }}
-          >
+          <h2 className="text-2xl font-bold mb-2">Skills & Technologies</h2>
+          <p className="text-sm text-muted-foreground">
             Technologies I work with to build robust and scalable applications
-          </motion.p>
+          </p>
         </motion.div>
 
-        <motion.div 
-          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        >
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {skillCategories.map((category, categoryIndex) => (
             <motion.div 
               key={category.title}
-              // variants={categoryVariants}
-              className="space-y-4 p-6 rounded-lg bg-card/50 border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:scale-105"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: categoryIndex * 0.1 }}
+              className="space-y-4 p-4 rounded-lg bg-white dark:bg-gray-900 border border-green-500/10 hover:border-green-500/30 transition-all duration-300 hover:shadow-md"
             >
-              <motion.h3 
-                className="text-xl font-bold mb-6 text-center bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent"
-                // variants={titleVariants}
-              >
+              <h3 className="text-lg font-bold mb-4 text-center group-hover:text-green-600 transition-colors">
                 {category.title}
-              </motion.h3>
+              </h3>
               
-              <div className="space-y-6">
+              <div className="space-y-4">
                 {category.skills.map((skill, skillIndex) => (
                   <motion.div 
                     key={skill.name}
-                    custom={skillIndex}
-                    variants={skillItemVariants}
-                    className="space-y-3 group"
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 + skillIndex * 0.05 }}
+                    className="space-y-2 group"
                   >
                     <div className="flex justify-between items-center">
-                      <motion.span 
-                        className="text-sm font-medium group-hover:text-primary transition-colors"
-                        whileHover={{ scale: 1.05 }}
-                      >
+                      <span className="text-xs font-medium group-hover:text-green-600 transition-colors">
                         {skill.name}
-                      </motion.span>
-                      <motion.span 
-                        className="text-xs text-muted-foreground font-bold"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 1 + skillIndex * 0.1 }}
-                      >
+                      </span>
+                      <span className="text-xs text-muted-foreground font-bold">
                         {skill.level}%
-                      </motion.span>
+                      </span>
                     </div>
                     
                     <div className="relative">
-                      <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                        <AnimatedProgress value={skill.level} className="h-2" />
+                      <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
+                        <AnimatedProgress value={skill.level} className="h-1.5" />
                       </div>
-                      
-                      {/* Pulse animation on complete */}
-                      <motion.div
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={isInView ? { 
-                          scale: [1, 1.2, 1], 
-                          opacity: [0, 0.3, 0] 
-                        } : {}}
-                        transition={{ 
-                          delay: 1.5 + skillIndex * 0.1,
-                          duration: 0.8,
-                          repeat: 0
-                        }}
-                        className="absolute inset-0 bg-primary rounded-full"
-                      />
                     </div>
                   </motion.div>
                 ))}
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Floating elements for visual interest */}
+        {/* Motivation Section */}
         <motion.div
-          className="absolute top-1/4 left-10 w-4 h-4 bg-primary/20 rounded-full"
-          animate={{
-            y: [0, -20, 0],
-            opacity: [0.5, 1, 0.5],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-10 w-6 h-6 bg-purple-500/20 rounded-full"
-          animate={{
-            y: [0, 20, 0],
-            opacity: [0.3, 0.7, 0.3],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1,
-          }}
-        />
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.3 }}
+          className="text-center mt-6"
+        >
+          <div className="bg-gradient-to-r from-green-500/5 to-blue-500/5 border border-green-500/20 rounded-lg p-4">
+            <h3 className="text-base font-bold mb-1">Continuous Learning</h3>
+            <p className="text-muted-foreground text-xs mb-2">
+              Always expanding my skill set with new technologies
+            </p>
+            <div className="flex justify-center gap-4 text-xs">
+              <div className="text-center">
+                <div className="text-lg font-bold text-green-500">4+</div>
+                <div className="text-muted-foreground">Categories</div>
+              </div>
+              <div className="text-center">
+                <div className="text-lg font-bold text-blue-500">15+</div>
+                <div className="text-muted-foreground">Skills</div>
+              </div>
+              <div className="text-center">
+                <div className="text-lg font-bold text-yellow-500">80%</div>
+                <div className="text-muted-foreground">Average</div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

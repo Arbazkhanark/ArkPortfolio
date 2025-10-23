@@ -3,6 +3,7 @@ import { Blog } from "@/components/Blog";
 import { Contact } from "@/components/Contact";
 import { Experience } from "@/components/Experince";
 import { Footer } from "@/components/Footer";
+import { GFGActivity } from "@/components/GeeksForGeeks";
 import { GitHubActivity } from "@/components/GithubActivity";
 import { Hero } from "@/components/Hero";
 import { LeetCodeActivity } from "@/components/LeetCodeActivity";
@@ -21,6 +22,7 @@ export default function Home() {
       <Experience />
       <Blog />
       <LeetCodeActivity />
+      <GFGActivity />
       <GitHubActivity />
       <Contact />
       

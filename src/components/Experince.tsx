@@ -21,7 +21,7 @@ const experiences = [
       "Implemented comprehensive testing and CI/CD pipelines"
     ],
     icon: Rocket,
-    gradient: "from-blue-500 to-cyan-500",
+    gradient: "from-green-500 to-blue-500",
     delay: 0.1
   },
   {
@@ -38,133 +38,20 @@ const experiences = [
       "Collaborated with design and product teams for feature development"
     ],
     icon: Building2,
-    gradient: "from-purple-500 to-pink-500",
+    gradient: "from-green-500 to-blue-500",
     delay: 0.2
   },
 ];
 
 export const Experience = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3
-      }
-    }
-  };
-
-  const titleVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 50 
-    },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const experienceCardVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 60,
-      x: 0
-    },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      x: 0,
-      transition: {
-        duration: 0.7,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const iconVariants = {
-    hidden: { 
-      scale: 0,
-      rotate: -180 
-    },
-    visible: { 
-      scale: 1,
-      rotate: 0,
-      transition: {
-        duration: 0.8,
-        ease: "backOut"
-      }
-    }
-  };
-
-  const tagVariants = {
-    hidden: { 
-      opacity: 0, 
-      scale: 0.8,
-      y: 20
-    },
-    visible: (i: number) => ({
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.1,
-        duration: 0.4,
-        ease: "backOut"
-      }
-    })
-  };
-
-  const achievementVariants = {
-    hidden: { 
-      opacity: 0, 
-      x: -20 
-    },
-    visible: (i: number) => ({
-      opacity: 1,
-      x: 0,
-      transition: {
-        delay: 0.5 + i * 0.1,
-        duration: 0.5
-      }
-    })
-  };
-
-  const floatingVariants = {
-    floating: {
-      y: [0, -8, 0],
-      transition: {
-        duration: 4,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
-  };
-
-  const timelineVariants = {
-    hidden: { scaleY: 0 },
-    visible: {
-      scaleY: 1,
-      transition: {
-        duration: 1,
-        ease: "easeOut"
-      }
-    }
-  };
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   return (
-    <section id="experience" className="py-20 px-4 bg-secondary/20 relative overflow-hidden" ref={ref}>
+    <section id="experience" className="py-8 px-4 bg-blue-50 dark:bg-blue-950/20 relative overflow-hidden" ref={ref}>
       {/* Background Elements */}
       <motion.div
-        className="absolute top-1/4 left-5 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl"
+        className="absolute top-1/4 left-5 w-32 h-32 bg-green-500/10 rounded-full blur-3xl"
         animate={{
           scale: [1, 1.4, 1],
           opacity: [0.1, 0.3, 0.1],
@@ -176,7 +63,7 @@ export const Experience = () => {
         }}
       />
       <motion.div
-        className="absolute bottom-1/4 right-5 w-28 h-28 bg-purple-500/10 rounded-full blur-3xl"
+        className="absolute bottom-1/4 right-5 w-28 h-28 bg-blue-500/10 rounded-full blur-3xl"
         animate={{
           scale: [1.3, 1, 1.3],
           opacity: [0.2, 0.4, 0.2],
@@ -191,83 +78,63 @@ export const Experience = () => {
 
       <div className="container mx-auto max-w-4xl relative z-10">
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-8"
         >
-          <motion.h2 
-            // variants={titleVariants}
-            className="text-4xl sm:text-5xl font-bold mb-4"
-          >
-            Professional Experience
-          </motion.h2>
-          <motion.p 
-            // variants={titleVariants}
-            className="text-lg text-muted-foreground"
-          >
+          <h2 className="text-2xl font-bold mb-2">Professional Experience</h2>
+          <p className="text-sm text-muted-foreground">
             My journey through the world of software development and innovation
-          </motion.p>
+          </p>
         </motion.div>
 
         {/* Timeline */}
-        <motion.div 
-          className="relative"
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        >
+        <div className="relative">
           {/* Vertical Timeline Line */}
           <motion.div
-            // variants={timelineVariants}
-            className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-purple-500 to-pink-500 transform origin-top"
-            style={{ scaleY: 0 }}
+            initial={{ scaleY: 0 }}
+            whileInView={{ scaleY: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-green-500 via-blue-500 to-green-500 transform origin-top"
           />
           
-          <div className="space-y-12 relative">
+          <div className="space-y-6 relative">
             {experiences.map((exp, index) => (
               <motion.div
                 key={index}
-                // variants={experienceCardVariants}
-                custom={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.2 }}
                 whileHover={{ 
-                  y: -5,
-                  scale: 1.02,
-                  transition: { duration: 0.3 }
+                  y: -3,
+                  scale: 1.01,
                 }}
                 className="relative group"
               >
                 {/* Timeline Dot */}
                 <motion.div
-                  // variants={iconVariants}
-                  className="absolute left-0 top-6 w-12 h-12 rounded-full bg-background border-4 border-primary flex items-center justify-center z-10 shadow-lg"
-                  whileHover={{ scale: 1.2 }}
+                  initial={{ scale: 0, rotate: -180 }}
+                  whileInView={{ scale: 1, rotate: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.3 }}
+                  className="absolute left-0 top-6 w-10 h-10 rounded-full bg-background border-2 border-green-500 flex items-center justify-center z-10 shadow-lg"
+                  whileHover={{ scale: 1.1 }}
                 >
                   <motion.div
-                    // variants={floatingVariants}
-                    animate="floating"
-                    className={`p-2 rounded-full bg-gradient-to-br ${exp.gradient} text-white`}
+                    animate={{ y: [0, -4, 0] }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                    className={`p-1.5 rounded-full bg-gradient-to-br ${exp.gradient} text-white`}
                   >
-                    <exp.icon className="w-4 h-4" />
+                    <exp.icon className="w-3 h-3" />
                   </motion.div>
-                  
-                  {/* Pulsing Ring */}
-                  <motion.div
-                    className="absolute inset-0 rounded-full border-2 border-primary/30"
-                    animate={{
-                      scale: [1, 1.5, 1],
-                      opacity: [0.5, 0, 0.5],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      delay: index * 0.5,
-                    }}
-                  />
                 </motion.div>
 
-                <div className="ml-20">
-                  <div className="grid md:grid-cols-3 gap-6 p-8 bg-card border border-border rounded-2xl hover:border-primary/50 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-primary/10 relative overflow-hidden">
+                <div className="ml-16">
+                  <div className="p-6 bg-white dark:bg-gray-900 border border-green-500/10 rounded-xl hover:border-green-500/30 transition-all duration-300 group-hover:shadow-md relative overflow-hidden">
                     
                     {/* Shimmer Effect */}
                     <motion.div
@@ -277,113 +144,95 @@ export const Experience = () => {
                       transition={{ duration: 0.8 }}
                     />
 
-                    {/* Left Column - Basic Info */}
-                    <div className="space-y-4">
-                      <motion.h3 
-                        className="text-2xl font-bold bg-gradient-to-r from-foreground to-foreground bg-clip-text group-hover:from-primary group-hover:to-purple-600 transition-all duration-500"
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        {exp.title}
-                      </motion.h3>
-                      
-                      <motion.div 
-                        className="text-primary font-semibold text-lg"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.3 + index * 0.1 }}
-                      >
-                        {exp.company}
-                      </motion.div>
-
+                    <div className="grid md:grid-cols-3 gap-4">
+                      {/* Left Column - Basic Info */}
                       <div className="space-y-3">
-                        <motion.div 
-                          className="flex items-center gap-2 text-sm text-muted-foreground"
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.4 + index * 0.1 }}
+                        <motion.h3 
+                          className="text-xl font-bold group-hover:text-green-600 transition-colors duration-300"
+                          whileHover={{ scale: 1.02 }}
                         >
-                          <MapPin className="w-4 h-4" />
-                          <span>{exp.location}</span>
-                        </motion.div>
-                        <motion.div 
-                          className="flex items-center gap-2 text-sm text-muted-foreground"
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.5 + index * 0.1 }}
-                        >
-                          <Calendar className="w-4 h-4" />
-                          <span>{exp.period}</span>
-                        </motion.div>
-                      </div>
-                    </div>
-
-                    {/* Right Column - Details */}
-                    <div className="md:col-span-2 space-y-6">
-                      {/* Tags */}
-                      <motion.div 
-                        className="flex flex-wrap gap-2"
-                        variants={containerVariants}
-                      >
-                        {exp.tags.map((tag, tagIndex) => (
-                          <motion.div
-                            key={tag}
-                            custom={tagIndex}
-                            // variants={tagVariants}
-                          >
-                            <Badge 
-                              variant="outline" 
-                              className="group-hover:border-primary/50 group-hover:bg-primary/5 transition-colors duration-300 backdrop-blur-sm"
-                            >
-                              {tag}
-                            </Badge>
-                          </motion.div>
-                        ))}
-                      </motion.div>
-
-                      {/* Achievements */}
-                      <div>
-                        <motion.p 
-                          className="font-semibold mb-4 text-lg flex items-center gap-2"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 0.6 + index * 0.1 }}
-                        >
-                          <span>Key Achievements</span>
-                          <motion.div
-                            animate={{ rotate: [0, 360] }}
-                            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                          >
-                            <ArrowRight className="w-4 h-4" />
-                          </motion.div>
-                        </motion.p>
+                          {exp.title}
+                        </motion.h3>
                         
-                        <motion.ul 
-                          className="space-y-3"
-                          variants={containerVariants}
-                        >
-                          {exp.achievements.map((achievement, achievementIndex) => (
-                            <motion.li 
-                              key={achievementIndex}
-                              custom={achievementIndex}
-                              variants={achievementVariants}
-                              className="flex items-start gap-3 text-sm text-muted-foreground group/achievement"
-                              whileHover={{ x: 5 }}
+                        <div className="text-green-600 font-semibold">
+                          {exp.company}
+                        </div>
+
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                            <MapPin className="w-3 h-3" />
+                            <span>{exp.location}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                            <Calendar className="w-3 h-3" />
+                            <span>{exp.period}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Right Column - Details */}
+                      <div className="md:col-span-2 space-y-4">
+                        {/* Tags */}
+                        <div className="flex flex-wrap gap-1.5">
+                          {exp.tags.map((tag, tagIndex) => (
+                            <motion.div
+                              key={tag}
+                              initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ delay: 0.4 + tagIndex * 0.05 }}
                             >
-                              <motion.span 
-                                className="text-primary mt-1 flex-shrink-0"
-                                whileHover={{ scale: 1.2 }}
-                                transition={{ type: "spring", stiffness: 400 }}
+                              <Badge 
+                                className="text-xs bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20 group-hover:border-green-500/40 transition-colors"
                               >
-                                ✓
-                              </motion.span>
-                              <motion.span
-                                className="group-hover/achievement:text-foreground transition-colors duration-300"
-                              >
-                                {achievement}
-                              </motion.span>
-                            </motion.li>
+                                {tag}
+                              </Badge>
+                            </motion.div>
                           ))}
-                        </motion.ul>
+                        </div>
+
+                        {/* Achievements */}
+                        <div>
+                          <motion.p 
+                            className="font-semibold mb-3 text-sm flex items-center gap-1.5"
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.5 }}
+                          >
+                            <span>Key Achievements</span>
+                            <motion.div
+                              animate={{ rotate: [0, 360] }}
+                              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                            >
+                              <ArrowRight className="w-3 h-3" />
+                            </motion.div>
+                          </motion.p>
+                          
+                          <ul className="space-y-2">
+                            {exp.achievements.map((achievement, achievementIndex) => (
+                              <motion.li 
+                                key={achievementIndex}
+                                initial={{ opacity: 0, x: -10 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.6 + achievementIndex * 0.1 }}
+                                className="flex items-start gap-2 text-xs text-muted-foreground group/achievement"
+                                whileHover={{ x: 2 }}
+                              >
+                                <motion.span 
+                                  className="text-green-600 mt-0.5 flex-shrink-0"
+                                  whileHover={{ scale: 1.1 }}
+                                >
+                                  ✓
+                                </motion.span>
+                                <span className="group-hover/achievement:text-foreground transition-colors duration-300">
+                                  {achievement}
+                                </span>
+                              </motion.li>
+                            ))}
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -391,35 +240,34 @@ export const Experience = () => {
               </motion.div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* Floating Call-to-Action */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="text-center mt-12"
+          transition={{ duration: 0.4 }}
+          className="text-center mt-6"
         >
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center gap-3 px-6 py-3 bg-card border border-border rounded-2xl hover:border-primary/50 transition-all duration-300 group cursor-pointer"
+            whileHover={{ scale: 1.02 }}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-900 border border-green-500/20 rounded-lg hover:border-green-500/40 transition-all duration-300 group cursor-pointer"
           >
             <motion.span
-              animate={{ x: [0, 5, 0] }}
+              animate={{ y: [0, -2, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
               🚀
             </motion.span>
-            <span className="text-sm text-muted-foreground group-hover:text-foreground">
+            <span className="text-xs text-muted-foreground group-hover:text-foreground">
               Ready for the next challenge
             </span>
             <motion.div
-              animate={{ x: [0, 3, 0] }}
+              animate={{ x: [0, 2, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             >
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-3 h-3" />
             </motion.div>
           </motion.div>
         </motion.div>

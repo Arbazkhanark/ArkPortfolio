@@ -1,119 +1,3 @@
-// 'use client';
-
-// import { Badge } from "@/components/ui/badge";
-// import { Button } from "@/components/ui/button";
-// import { ExternalLink, Github } from "lucide-react";
-// import { motion } from 'framer-motion';
-
-// const projects = [
-//   {
-//     title: "Anime Merch E-Commerce Platform",
-//     description: "A full-stack e-commerce application for anime merchandise sales with advanced features and admin dashboard.",
-//     tags: ["Next.js", "Node.js", "MongoDB", "Vercel", "TypeScript"],
-//     featured: true,
-//     demoLink: "#",
-//     githubLink: "#"
-//   },
-//   {
-//     title: "MuscleSharks Website",
-//     description: "E-commerce platform with comprehensive product catalog, order tracking, and seamless payment integration.",
-//     tags: ["React", "Node.js", "Express", "MongoDB", "REST APIs"],
-//     featured: true,
-//     demoLink: "#",
-//     githubLink: "#"
-//   },
-// ];
-
-// export const Projects = () => {
-//   return (
-//     <section id="projects" className="py-20 px-4">
-//       <div className="container mx-auto">
-//         <motion.div
-//           initial={{ opacity: 0, y: 50 }}
-//           whileInView={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.8 }}
-//           viewport={{ once: true }}
-//           className="text-center mb-16"
-//         >
-//           <h2 className="text-4xl sm:text-5xl font-bold mb-4">Featured Projects</h2>
-//           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-//             A showcase of my recent work and the technologies I&apos;ve used to bring ideas to life
-//           </p>
-//         </motion.div>
-
-//         <div className="grid md:grid-cols-2 gap-8 mb-12">
-//           {projects.map((project, index) => (
-//             <motion.div 
-//               key={index}
-//               initial={{ opacity: 0, y: 50 }}
-//               whileInView={{ opacity: 1, y: 0 }}
-//               transition={{ duration: 0.6, delay: index * 0.2 }}
-//               viewport={{ once: true }}
-//               className="bg-card border border-border rounded-lg overflow-hidden hover:border-primary transition-all group"
-//             >
-//               <div className="aspect-video bg-gradient-to-br from-primary/20 to-purple-600/20 flex items-center justify-center">
-//                 <div className="text-6xl opacity-50">🛒</div>
-//               </div>
-//               <div className="p-6 space-y-4">
-//                 {project.featured && (
-//                   <Badge variant="secondary" className="gap-1">
-//                     ⭐ Featured
-//                   </Badge>
-//                 )}
-//                 <h3 className="text-2xl font-bold group-hover:text-primary transition-colors">
-//                   {project.title}
-//                 </h3>
-//                 <p className="text-muted-foreground">{project.description}</p>
-//                 <div className="flex flex-wrap gap-2">
-//                   {project.tags.map((tag) => (
-//                     <Badge key={tag} variant="outline">{tag}</Badge>
-//                   ))}
-//                 </div>
-//                 <div className="flex gap-2 pt-2">
-//                   <Button variant="outline" size="sm" className="gap-2">
-//                     <Github className="w-4 h-4" />
-//                     Code
-//                   </Button>
-//                   <Button size="sm" className="gap-2">
-//                     <ExternalLink className="w-4 h-4" />
-//                     Live Demo
-//                   </Button>
-//                 </div>
-//               </div>
-//             </motion.div>
-//           ))}
-//         </div>
-
-//         <motion.div
-//           initial={{ opacity: 0, y: 30 }}
-//           whileInView={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.6 }}
-//           viewport={{ once: true }}
-//           className="text-center mt-12"
-//         >
-//           <Button variant="outline" size="lg">
-//             View All Projects →
-//           </Button>
-//         </motion.div>
-//       </div>
-//     </section>
-//   );
-// };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 'use client';
 
 import { Badge } from "@/components/ui/badge";
@@ -132,7 +16,7 @@ const projects = [
     demoLink: "#",
     githubLink: "#",
     emoji: "🛒",
-    gradient: "from-blue-500/20 to-purple-600/20",
+    gradient: "from-green-500/20 to-blue-500/20",
     delay: 0.1
   },
   {
@@ -143,135 +27,20 @@ const projects = [
     demoLink: "#",
     githubLink: "#",
     emoji: "💪",
-    gradient: "from-green-500/20 to-blue-600/20",
+    gradient: "from-green-500/20 to-blue-500/20",
     delay: 0.2
   },
 ];
 
 export const Projects = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3
-      }
-    }
-  };
-
-  const titleVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 50 
-    },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const projectCardVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 60,
-      scale: 0.9
-    },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.7,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const imageVariants = {
-    hidden: { 
-      scale: 1.2,
-      opacity: 0 
-    },
-    visible: { 
-      scale: 1,
-      opacity: 1,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const tagVariants = {
-    hidden: { 
-      opacity: 0, 
-      scale: 0.8 
-    },
-    visible: (i: number) => ({
-      opacity: 1,
-      scale: 1,
-      transition: {
-        delay: i * 0.1,
-        duration: 0.4
-      }
-    })
-  };
-
-  const buttonVariants = {
-    hidden: { 
-      opacity: 0, 
-      x: -20 
-    },
-    visible: { 
-      opacity: 1, 
-      x: 0,
-      transition: {
-        duration: 0.5
-      }
-    },
-    hover: {
-      scale: 1.05,
-      transition: {
-        duration: 0.2
-      }
-    }
-  };
-
-  const floatingVariants = {
-    floating: {
-      y: [0, -10, 0],
-      transition: {
-        duration: 3,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
-  };
-
-  const shimmerVariants = {
-    initial: { x: "-100%" },
-    hover: {
-      x: "100%",
-      transition: {
-        duration: 0.8,
-        ease: "easeInOut"
-      }
-    }
-  };
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   return (
-    <section id="projects" className="py-20 px-4 relative overflow-hidden" ref={ref}>
+    <section id="projects" className="py-8 px-4 bg-blue-50 dark:bg-blue-950/20 relative overflow-hidden" ref={ref}>
       {/* Background Elements */}
       <motion.div
-        className="absolute top-1/4 left-5 w-24 h-24 bg-blue-500/10 rounded-full blur-3xl"
+        className="absolute top-1/4 left-5 w-24 h-24 bg-green-500/10 rounded-full blur-3xl"
         animate={{
           scale: [1, 1.3, 1],
           opacity: [0.2, 0.4, 0.2],
@@ -283,7 +52,7 @@ export const Projects = () => {
         }}
       />
       <motion.div
-        className="absolute bottom-1/3 right-5 w-20 h-20 bg-purple-500/10 rounded-full blur-3xl"
+        className="absolute bottom-1/3 right-5 w-20 h-20 bg-blue-500/10 rounded-full blur-3xl"
         animate={{
           scale: [1.2, 1, 1.2],
           opacity: [0.3, 0.5, 0.3],
@@ -298,122 +67,76 @@ export const Projects = () => {
 
       <div className="container mx-auto relative z-10">
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-8"
         >
-          <motion.h2 
-            // variants={titleVariants}
-            className="text-4xl sm:text-5xl font-bold mb-4"
-          >
-            Featured Projects
-          </motion.h2>
-          <motion.p 
-            // variants={titleVariants}
-            className="text-lg text-muted-foreground max-w-2xl mx-auto"
-          >
+          <h2 className="text-2xl font-bold mb-2">Featured Projects</h2>
+          <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
             A showcase of my recent work and the technologies I&apos;ve used to bring ideas to life
-          </motion.p>
+          </p>
         </motion.div>
 
-        <motion.div 
-          className="grid md:grid-cols-2 gap-8 mb-12"
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        >
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
           {projects.map((project, index) => (
             <motion.div
               key={index}
-              // variants={projectCardVariants}
-              custom={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
               whileHover={{ 
-                y: -8,
-                transition: { duration: 0.3 }
+                y: -5,
               }}
               className="group relative"
             >
-              {/* Shimmer Effect */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 rounded-lg -z-10"
-                // variants={shimmerVariants}
-                initial="initial"
-                whileHover="hover"
-              />
-              
-              <div className="bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-primary/10 relative">
-                {/* Animated Border Glow */}
-                <motion.div
-                  className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-20 blur-md transition-opacity duration-500"
-                />
-                
+              <div className="bg-white dark:bg-gray-900 border border-green-500/10 rounded-xl overflow-hidden hover:border-green-500/30 transition-all duration-300 group-hover:shadow-md relative">
                 <div className="relative overflow-hidden">
                   <motion.div
-                    // variants={imageVariants}
                     className={`aspect-video bg-gradient-to-br ${project.gradient} flex items-center justify-center relative`}
                   >
-                    {/* Animated Background Pattern */}
                     <motion.div
-                      className="absolute inset-0 opacity-10"
-                      animate={{
-                        backgroundPosition: ['0% 0%', '100% 100%'],
-                      }}
-                      transition={{
-                        duration: 10,
-                        repeat: Infinity,
-                        ease: "linear",
-                      }}
-                      style={{
-                        backgroundImage: `radial-gradient(circle at 25% 25%, white 2px, transparent 0)`,
-                        backgroundSize: '30px 30px',
-                      }}
-                    />
-                    
-                    <motion.div
-                      // variants={floatingVariants}
-                      animate="floating"
-                      className="text-6xl opacity-70"
+                      animate={{ y: [0, -8, 0] }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                      className="text-4xl opacity-70"
                     >
                       {project.emoji}
                     </motion.div>
 
                     {/* Hover Overlay */}
                     <motion.div
-                      className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+                      className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
                       whileHover={{ opacity: 1 }}
                     >
                       <motion.div
-                        className="flex gap-4"
-                        initial={{ opacity: 0, y: 20 }}
+                        className="flex gap-2"
+                        initial={{ opacity: 0, y: 10 }}
                         whileHover={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.2 }}
                       >
-                        <motion.div
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                        >
-                          <Button variant="secondary" size="sm" className="gap-2 backdrop-blur-sm">
-                            <ExternalLink className="w-4 h-4" />
-                            Preview
-                          </Button>
-                        </motion.div>
+                        <Button variant="secondary" size="sm" className="gap-1 backdrop-blur-sm text-xs">
+                          <ExternalLink className="w-3 h-3" />
+                          Preview
+                        </Button>
                       </motion.div>
                     </motion.div>
                   </motion.div>
                 </div>
 
-                <div className="p-6 space-y-4 relative">
-                  {/* Featured Badge Animation */}
+                <div className="p-4 space-y-3 relative">
+                  {/* Featured Badge */}
                   {project.featured && (
                     <motion.div
                       initial={{ opacity: 0, scale: 0 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.5 + index * 0.1, type: "spring" }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.3 + index * 0.1 }}
                     >
-                      <Badge variant="secondary" className="gap-1 group-hover:shadow-lg transition-shadow">
+                      <Badge className="gap-1 bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20 text-xs">
                         <motion.div
-                          animate={{ rotate: [0, 10, -10, 0] }}
+                          animate={{ rotate: [0, 5, -5, 0] }}
                           transition={{ duration: 2, repeat: Infinity }}
                         >
                           ⭐
@@ -423,123 +146,98 @@ export const Projects = () => {
                     </motion.div>
                   )}
 
-                  <motion.h3 
-                    className="text-2xl font-bold group-hover:text-primary transition-colors bg-gradient-to-r from-foreground to-foreground bg-clip-text group-hover:from-primary group-hover:to-purple-600"
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
+                  <h3 className="text-lg font-bold group-hover:text-green-600 transition-colors">
                     {project.title}
-                  </motion.h3>
+                  </h3>
 
-                  <motion.p 
-                    className="text-muted-foreground leading-relaxed"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.3 + index * 0.1 }}
-                  >
+                  <p className="text-muted-foreground text-sm leading-relaxed">
                     {project.description}
-                  </motion.p>
+                  </p>
 
-                  <motion.div 
-                    className="flex flex-wrap gap-2"
-                    variants={containerVariants}
-                  >
+                  <div className="flex flex-wrap gap-1">
                     {project.tags.map((tag, tagIndex) => (
                       <motion.div
                         key={tag}
-                        custom={tagIndex}
-                        variants={tagVariants}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.4 + tagIndex * 0.05 }}
                       >
                         <Badge 
-                          variant="outline" 
-                          className="group-hover:border-primary/50 group-hover:bg-primary/5 transition-colors"
+                          className="text-xs bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20 group-hover:border-green-500/40"
                         >
                           {tag}
                         </Badge>
                       </motion.div>
                     ))}
-                  </motion.div>
+                  </div>
 
-                  <motion.div 
-                    className="flex gap-2 pt-2"
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                  >
-                    <motion.div variants={buttonVariants}>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="gap-2 group/btn"
-                        // whileHover="hover"
-                      >
-                        <motion.div
-                          whileHover={{ rotate: 360 }}
-                          transition={{ duration: 0.5 }}
-                        >
-                          <Github className="w-4 h-4" />
-                        </motion.div>
-                        Code
-                      </Button>
-                    </motion.div>
-                    <motion.div variants={buttonVariants}>
-                      <Button 
-                        size="sm" 
-                        className="gap-2 group/btn bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
-                        // whileHover="hover"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                        Live Demo
-                        <motion.div
-                          initial={{ x: 0 }}
-                          whileHover={{ x: 3 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <ArrowRight className="w-4 h-4" />
-                        </motion.div>
-                      </Button>
-                    </motion.div>
-                  </motion.div>
+                  <div className="flex gap-2 pt-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="gap-1 text-xs h-8"
+                    >
+                      <Github className="w-3 h-3" />
+                      Code
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      className="gap-1 text-xs h-8 bg-green-600 hover:bg-green-700"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      Live Demo
+                      <ArrowRight className="w-3 h-3" />
+                    </Button>
+                  </div>
                 </div>
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
 
+        {/* Motivation Section */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="text-center mt-12"
+          transition={{ duration: 0.4, delay: 0.3 }}
+          className="text-center"
         >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <div className="bg-gradient-to-r from-green-500/5 to-blue-500/5 border border-green-500/20 rounded-lg p-4 mb-4">
+            <h3 className="text-base font-bold mb-1">Building Real Solutions</h3>
+            <p className="text-muted-foreground text-xs mb-2">
+              Creating practical applications that solve real-world problems
+            </p>
+            <div className="flex justify-center gap-4 text-xs">
+              <div className="text-center">
+                <div className="text-lg font-bold text-green-500">2</div>
+                <div className="text-muted-foreground">Featured</div>
+              </div>
+              <div className="text-center">
+                <div className="text-lg font-bold text-blue-500">5+</div>
+                <div className="text-muted-foreground">Technologies</div>
+              </div>
+              <div className="text-center">
+                <div className="text-lg font-bold text-yellow-500">100%</div>
+                <div className="text-muted-foreground">Functional</div>
+              </div>
+            </div>
+          </div>
+
+          <Button 
+            variant="outline" 
+            size="lg" 
+            className="gap-2 border-green-500/20 hover:border-green-500/40"
           >
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="gap-2 group relative overflow-hidden"
+            <span>View All Projects</span>
+            <motion.div
+              animate={{ x: [0, 3, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
             >
-              <span className="relative z-10">View All Projects</span>
-              <motion.div
-                animate={{ x: [0, 5, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="relative z-10"
-              >
-                <ArrowRight className="w-4 h-4" />
-              </motion.div>
-              
-              {/* Button Shimmer */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                initial={{ x: "-100%" }}
-                whileHover={{ x: "100%" }}
-                transition={{ duration: 0.6 }}
-              />
-            </Button>
-          </motion.div>
+              <ArrowRight className="w-4 h-4" />
+            </motion.div>
+          </Button>
         </motion.div>
       </div>
     </section>
