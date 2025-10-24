@@ -167,11 +167,10 @@ export const GFGActivity = () => {
       setError(null);
       
       try {
-        const proxyUrl = 'https://api.allorigins.win/raw?url=';
+        // Try direct API first
         const targetUrl = `https://geeks-for-geeks-api.vercel.app/${username}`;
-        const apiUrl = `${proxyUrl}${encodeURIComponent(targetUrl)}`;
         
-        const response = await fetch(apiUrl, {
+        const response = await fetch(targetUrl, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -183,6 +182,7 @@ export const GFGActivity = () => {
         }
         
         const apiData: GFGAPIResponse = await response.json();
+        console.log("GFG API Data:", apiData);
         
         const transformedData: GFGData = {
           username: apiData.info.userName,
@@ -258,6 +258,7 @@ export const GFGActivity = () => {
         console.error('Error fetching GFG data:', err);
         setError(`Failed to load GeeksforGeeks data: ${err instanceof Error ? err.message : 'Unknown error'}. Showing sample data.`);
         
+        // Use comprehensive sample data
         const sampleData: GFGData = {
           username: username,
           fullName: "Arbaaz Khan",
@@ -299,6 +300,13 @@ export const GFGActivity = () => {
               result: "Solved",
               language: "Java",
               problemUrl: "https://practice.geeksforgeeks.org/problems/preorder-traversal"
+            },
+            {
+              problem: "Binary Search",
+              date: new Date(Date.now() - 259200000).toISOString().split('T')[0],
+              result: "Solved",
+              language: "C++",
+              problemUrl: "https://practice.geeksforgeeks.org/problems/binary-search"
             }
           ]
         };
@@ -349,6 +357,7 @@ export const GFGActivity = () => {
     );
   }
 
+  // Chart data for pie chart
   const chartData = data.problems.map(problem => ({
     name: problem.difficulty,
     value: problem.solved,
@@ -356,12 +365,14 @@ export const GFGActivity = () => {
     color: DIFFICULTY_COLORS[problem.difficulty as keyof typeof DIFFICULTY_COLORS]
   }));
 
+  // Main Stats Cards Data
   const statsCards = [
     { 
       title: "Problems Solved", 
       value: data.totalProblemsSolved, 
       icon: Trophy,
       color: "text-yellow-500",
+      bgColor: "bg-yellow-500/10",
       description: "Total questions solved"
     },
     { 
@@ -369,6 +380,7 @@ export const GFGActivity = () => {
       value: data.overallCodingScore, 
       icon: Target,
       color: "text-blue-500",
+      bgColor: "bg-blue-500/10",
       description: "Overall performance score"
     },
     { 
@@ -376,6 +388,7 @@ export const GFGActivity = () => {
       value: data.schoolRank > 0 ? `#${data.schoolRank}` : 'N/A', 
       icon: School,
       color: "text-green-500",
+      bgColor: "bg-green-500/10",
       description: "Rank in your institute"
     },
     { 
@@ -383,38 +396,48 @@ export const GFGActivity = () => {
       value: `${data.streak} day${data.streak !== 1 ? 's' : ''}`, 
       icon: Zap,
       color: "text-orange-500",
+      bgColor: "bg-orange-500/10",
       description: "Consistent coding days"
     },
   ];
 
+  // Additional Stats - FIXED VALUES
   const additionalStats = [
     {
       title: "Max Streak",
       value: data.maxStreak,
+      subtitle: "days",
       icon: TrendingUp,
       color: "text-purple-500",
+      bgColor: "bg-purple-500/10",
       description: "Longest coding streak"
     },
     {
       title: "Monthly Score",
       value: data.monthlyCodingScore,
+      subtitle: "points",
       icon: Calendar,
       color: "text-cyan-500",
+      bgColor: "bg-cyan-500/10",
       description: "This month's progress"
     },
     {
       title: "Languages",
       value: data.languages.length,
+      subtitle: "languages",
       icon: Code,
       color: "text-indigo-500",
-      description: "Programming languages"
+      bgColor: "bg-indigo-500/10",
+      description: "Programming languages used"
     },
     {
       title: "Institute",
       value: data.institute.split(' ')[0],
+      subtitle: data.institute.split(' ').slice(1).join(' '),
       icon: User,
       color: "text-pink-500",
-      description: data.institute
+      bgColor: "bg-pink-500/10",
+      description: "Educational institution"
     }
   ];
 
@@ -434,47 +457,66 @@ export const GFGActivity = () => {
 
   return (
     <section id="geeksforgeeks" className="py-8 px-4 bg-blue-50 dark:bg-blue-950/20 relative overflow-hidden" ref={ref}>
-      {error && (
-        <div className="container mx-auto mb-3">
-          <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-3 py-2 rounded text-sm">
-            <strong className="font-bold">Note: </strong>
-            <span className="block sm:inline">{error}</span>
-          </div>
-        </div>
-      )}
-
-      {/* Header Section - Minimal gap */}
+      {/* Animated Background Elements */}
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.4 }}
-        className="text-center mb-4"
-      >
-        <h2 className="text-2xl font-bold mb-2">GeeksforGeeks Activity</h2>
-        <p className="text-muted-foreground text-sm mb-3">
-          Real-time coding statistics from your GFG profile
-        </p>
-        <div className="flex items-center justify-center gap-2">
-          <img 
-            src={data.profilePicture} 
-            alt={data.fullName}
-            className="w-8 h-8 rounded-full border border-green-500"
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = "https://media.geeksforgeeks.org/img-practice/user_web-1598433228.svg";
-            }}
-          />
-          <div className="text-left">
-            <p className="font-semibold text-sm">{data.fullName}</p>
-            <p className="text-xs text-muted-foreground">@{data.username}</p>
-          </div>
-        </div>
-      </motion.div>
+        className="absolute top-10 left-10 w-20 h-20 bg-green-500/10 rounded-full blur-2xl"
+        animate={{
+          scale: [1, 1.3, 1],
+          opacity: [0.3, 0.6, 0.3],
+        }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
 
       <div className="container mx-auto relative z-10">
-        {/* Main Stats Cards - Minimal gap */}
+        {/* Error Message */}
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-4 p-3 bg-yellow-100 border border-yellow-400 rounded-lg text-yellow-700 text-sm"
+          >
+            <strong className="font-bold">Note: </strong>
+            {error}
+          </motion.div>
+        )}
+
+        {/* Header Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="text-center mb-6"
+        >
+          <h2 className="text-3xl font-bold mb-2 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+            GeeksforGeeks Activity
+          </h2>
+          <p className="text-muted-foreground text-sm mb-3">
+            Real-time coding statistics from my GFG profile
+          </p>
+          <div className="flex items-center justify-center gap-2">
+            <img 
+              src={data.profilePicture} 
+              alt={data.fullName}
+              className="w-10 h-10 rounded-full border-2 border-green-500"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = "https://media.geeksforgeeks.org/img-practice/user_web-1598433228.svg";
+              }}
+            />
+            <div className="text-left">
+              <p className="font-semibold text-sm">{data.fullName}</p>
+              <p className="text-xs text-muted-foreground">@{data.username}</p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Main Stats Cards */}
         <motion.div 
-          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6"
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
@@ -483,80 +525,107 @@ export const GFGActivity = () => {
             <motion.div
               key={card.title}
               custom={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
               whileHover={{ 
-                y: -2,
-                scale: 1.01,
+                y: -4,
+                scale: 1.02,
               }}
             >
-              <Card className="text-center hover:shadow-md transition-all duration-200 border border-green-500/10">
-                <CardContent className="p-3">
+              <Card className="text-center hover:shadow-lg transition-all duration-300 border-2 border-green-500/20 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm">
+                <CardContent className="p-4">
                   <motion.div
-                    className={`inline-flex p-1.5 rounded-lg bg-gradient-to-br from-green-500/10 to-blue-500/5 mb-2 ${card.color}`}
+                    className={`inline-flex p-2 rounded-xl ${card.bgColor} ${card.color} mb-3`}
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.5 }}
                   >
-                    <card.icon className="w-4 h-4" />
+                    <card.icon className="w-5 h-5" />
                   </motion.div>
                   <motion.p 
-                    className="text-xl font-bold mb-0.5"
+                    className="text-2xl font-bold mb-1 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent"
                     initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
+                    whileInView={{ scale: 1 }}
+                    viewport={{ once: true }}
                     transition={{ delay: 0.3 + index * 0.05, type: "spring" }}
                   >
                     {card.value}
                   </motion.p>
-                  <p className="text-xs text-muted-foreground font-medium">{card.title}</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{card.title}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{card.description}</p>
                 </CardContent>
               </Card>
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Additional Stats - Minimal gap */}
+        {/* Additional Stats - FIXED LAYOUT */}
         <motion.div 
-          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-4"
-          variants={containerVariants}
+          className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6"
           initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.1
+              }
+            }
+          }}
         >
           {additionalStats.map((card, index) => (
             <motion.div
               key={card.title}
-              custom={index}
-              whileHover={{ scale: 1.01 }}
+              variants={{
+                hidden: { opacity: 0, scale: 0.8 },
+                visible: { opacity: 1, scale: 1 }
+              }}
+              whileHover={{ scale: 1.05 }}
             >
-              <Card className="hover:shadow-sm transition-all duration-200">
-                <CardContent className="p-2">
-                  <div className="flex items-center gap-2">
-                    <div className={`p-1.5 rounded-md ${card.color} bg-opacity-10`}>
-                      <card.icon className="w-3 h-3" />
+              <Card className="hover:shadow-md transition-all duration-200 border border-green-500/10 h-full">
+                <CardContent className="p-3 flex flex-col h-full">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className={`p-2 rounded-lg ${card.bgColor} ${card.color}`}>
+                      <card.icon className="w-4 h-4" />
                     </div>
-                    <div className="text-left">
-                      <p className="text-lg font-bold">{card.value}</p>
+                    <div className="text-left flex-1">
+                      <p className="text-lg font-bold text-gray-800 dark:text-gray-200">
+                        {card.value}
+                      </p>
                       <p className="text-xs text-muted-foreground">{card.title}</p>
                     </div>
                   </div>
+                  {card.subtitle && (
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-auto">
+                      {card.subtitle}
+                    </p>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Progress by Difficulty - Minimal gap */}
+        {/* Progress by Difficulty */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
-          className="mb-4"
+          className="mb-6"
         >
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-1.5 text-base">
-                <TrendingUp className="w-3.5 h-3.5 text-green-600" />
+          <Card className="border-2 border-green-500/20">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <TrendingUp className="w-5 h-5 text-green-600" />
                 Progress by Difficulty Level
               </CardTitle>
             </CardHeader>
-            <CardContent className="pt-2">
-              <div className="space-y-3">
+            <CardContent className="pt-0">
+              <div className="space-y-4">
                 {chartData.map((difficulty, index) => (
                   <motion.div
                     key={difficulty.name}
@@ -580,9 +649,9 @@ export const GFGActivity = () => {
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.4 }}
-                  className="pt-3 border-t border-border"
+                  className="pt-4 border-t border-gray-200 dark:border-gray-700"
                 >
-                  <div className="flex justify-between items-center mb-1.5">
+                  <div className="flex justify-between items-center mb-2">
                     <span className="font-semibold text-sm">Overall Progress</span>
                     <span className="font-bold text-green-600 text-sm">
                       {totalSolved} / {totalProblems} 
@@ -591,7 +660,7 @@ export const GFGActivity = () => {
                       </span>
                     </span>
                   </div>
-                  <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
                     <motion.div
                       initial={{ scaleX: 0 }}
                       whileInView={{ scaleX: 1 }}
@@ -610,8 +679,8 @@ export const GFGActivity = () => {
           </Card>
         </motion.div>
 
-        {/* Charts Section - Minimal gap */}
-        <div className="grid lg:grid-cols-2 gap-4 mb-4">
+        {/* Charts Section */}
+        <div className="grid lg:grid-cols-2 gap-6 mb-6">
           {/* Problems Solved by Difficulty - Pie Chart */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -619,15 +688,15 @@ export const GFGActivity = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
           >
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-center gap-1.5 text-base">
-                  <PieChart className="w-3.5 h-3.5 text-green-600" />
+            <Card className="border-2 border-green-500/20">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <PieChart className="w-5 h-5 text-green-600" />
                   Problems Distribution
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <ResponsiveContainer width="100%" height={200}>
+                <ResponsiveContainer width="100%" height={250}>
                   <PieChart>
                     <Pie
                       data={chartData}
@@ -635,8 +704,8 @@ export const GFGActivity = () => {
                       nameKey="name"
                       cx="50%"
                       cy="50%"
-                      outerRadius={80}
-                      innerRadius={40}
+                      outerRadius={90}
+                      innerRadius={50}
                       label={({ name, value }) => `${name}: ${value}`}
                       labelLine={false}
                     >
@@ -663,15 +732,15 @@ export const GFGActivity = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
           >
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-center gap-1.5 text-base">
-                  <Calendar className="w-3.5 h-3.5 text-green-600" />
+            <Card className="border-2 border-green-500/20">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Calendar className="w-5 h-5 text-green-600" />
                   Weekly Coding Activity
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <ResponsiveContainer width="100%" height={200}>
+                <ResponsiveContainer width="100%" height={250}>
                   <BarChart data={weeklyActivity}>
                     <XAxis dataKey="day" />
                     <YAxis />
@@ -679,7 +748,7 @@ export const GFGActivity = () => {
                     <Bar 
                       dataKey="problems" 
                       fill="#16a34a"
-                      radius={[2, 2, 0, 0]}
+                      radius={[4, 4, 0, 0]}
                     />
                   </BarChart>
                 </ResponsiveContainer>
@@ -688,23 +757,23 @@ export const GFGActivity = () => {
           </motion.div>
         </div>
 
-        {/* Recent Activity - Minimal gap */}
+        {/* Recent Activity */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
-          className="mb-4"
+          className="mb-6"
         >
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-1.5 text-base">
-                <Clock className="w-3.5 h-3.5 text-green-600" />
+          <Card className="border-2 border-green-500/20">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Clock className="w-5 h-5 text-green-600" />
                 Recent Submissions
               </CardTitle>
             </CardHeader>
-            <CardContent className="pt-2">
-              <div className="space-y-1.5">
+            <CardContent className="pt-0">
+              <div className="space-y-2">
                 {data.recentSubmissions.slice(0, 4).map((sub, index) => (
                   <motion.div
                     key={index}
@@ -712,11 +781,11 @@ export const GFGActivity = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.05 }}
-                    whileHover={{ x: 2 }}
-                    className="flex items-center gap-2 p-2 rounded-md hover:bg-muted/50 transition-all group"
+                    whileHover={{ x: 4 }}
+                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-green-50 dark:hover:bg-green-950/20 transition-all group border border-transparent hover:border-green-500/20"
                   >
-                    <div className="p-1 rounded-full bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">
-                      <CheckCircle className="w-3 h-3" />
+                    <div className="p-2 rounded-full bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">
+                      <CheckCircle className="w-4 h-4" />
                     </div>
                     
                     <div className="flex-1 min-w-0">
@@ -724,12 +793,12 @@ export const GFGActivity = () => {
                         href={sub.problemUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="font-medium text-xs truncate hover:text-green-600 transition-colors"
+                        className="font-medium text-sm truncate hover:text-green-600 transition-colors group-hover:underline"
                       >
                         {sub.problem}
                       </a>
-                      <div className="flex items-center gap-1.5 mt-0.5 text-xs text-muted-foreground">
-                        <span className="px-1 py-0.5 bg-green-500/10 text-green-600 rounded text-xs">
+                      <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground">
+                        <span className="px-2 py-1 bg-green-500/10 text-green-600 dark:text-green-400 rounded-full">
                           {sub.language}
                         </span>
                         <span>{sub.date}</span>
@@ -742,23 +811,23 @@ export const GFGActivity = () => {
           </Card>
         </motion.div>
 
-        {/* Languages & Skills - Minimal gap */}
+        {/* Languages & Skills */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.3 }}
-          className="mb-4"
+          className="mb-6"
         >
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-1.5 text-base">
-                <Code className="w-3.5 h-3.5 text-green-600" />
+          <Card className="border-2 border-green-500/20">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Code className="w-5 h-5 text-green-600" />
                 Programming Languages
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-2">
                 {data.languages.map((language, index) => (
                   <motion.span
                     key={language}
@@ -767,7 +836,7 @@ export const GFGActivity = () => {
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.05 }}
                     whileHover={{ scale: 1.03 }}
-                    className="px-2 py-1 bg-green-500/10 text-green-700 dark:text-green-400 rounded-full font-medium text-xs border border-green-500/20"
+                    className="px-3 py-1.5 bg-green-500/10 text-green-700 dark:text-green-400 rounded-full font-medium text-sm border border-green-500/20"
                   >
                     {language}
                   </motion.span>
@@ -777,7 +846,7 @@ export const GFGActivity = () => {
           </Card>
         </motion.div>
 
-        {/* Motivation Section - Minimal gap */}
+        {/* Motivation Section */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -785,27 +854,30 @@ export const GFGActivity = () => {
           transition={{ duration: 0.3, delay: 0.2 }}
           className="text-center"
         >
-          <Card className="bg-gradient-to-r from-green-500/5 to-blue-500/5 border-green-500/20">
-            <CardContent className="p-3">
-              <h3 className="text-base font-bold mb-1">Live GFG Data</h3>
-              <p className="text-muted-foreground text-xs mb-2"> 
-                {error ? 'Showing sample data' : 'Real-time data from GeeksforGeeks'}
+          <Card className="bg-gradient-to-r from-green-500/10 to-blue-500/10 border-2 border-green-500/20">
+            <CardContent className="p-6">
+              <h3 className="text-xl font-bold mb-2 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                Continuous Learning Journey
+              </h3>
+              <p className="text-muted-foreground text-sm mb-4 max-w-2xl mx-auto">
+                Every problem solved is a step forward in mastering Data Structures & Algorithms. 
+                Consistency and practice are the keys to becoming a better problem solver.
               </p>
-              <div className="flex justify-center gap-3 text-xs">
+              <div className="flex justify-center gap-6 text-sm">
                 <div className="text-center">
-                  <div className="text-lg font-bold text-blue-500">{data.problems.find(p => p.difficulty === 'Basic')?.solved || 0}</div>
+                  <div className="text-2xl font-bold text-blue-500">{data.problems.find(p => p.difficulty === 'Basic')?.solved || 0}</div>
                   <div className="text-muted-foreground text-xs">Basic</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-lg font-bold text-green-500">{data.problems.find(p => p.difficulty === 'Easy')?.solved || 0}</div>
+                  <div className="text-2xl font-bold text-green-500">{data.problems.find(p => p.difficulty === 'Easy')?.solved || 0}</div>
                   <div className="text-muted-foreground text-xs">Easy</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-lg font-bold text-yellow-500">{data.problems.find(p => p.difficulty === 'Medium')?.solved || 0}</div>
+                  <div className="text-2xl font-bold text-yellow-500">{data.problems.find(p => p.difficulty === 'Medium')?.solved || 0}</div>
                   <div className="text-muted-foreground text-xs">Medium</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-lg font-bold text-red-500">{data.problems.find(p => p.difficulty === 'Hard')?.solved || 0}</div>
+                  <div className="text-2xl font-bold text-red-500">{data.problems.find(p => p.difficulty === 'Hard')?.solved || 0}</div>
                   <div className="text-muted-foreground text-xs">Hard</div>
                 </div>
               </div>
