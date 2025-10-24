@@ -489,121 +489,125 @@ export const GitHubActivity = () => {
           </Card>
         </motion.div>
 
-        {/* Commits + Chart */}
-        <div className="grid lg:grid-cols-2 gap-4">
-          {/* Chart */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-          >
-            <Card className="h-full">
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-center gap-1.5 text-base">
-                  <Calendar className="w-3.5 h-3.5 text-green-600" />
-                  Commit Activity - {selectedYear}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={200}>
-                  <LineChart data={getCommitChartData()}>
-                    <XAxis 
-                      dataKey="month" 
-                      fontSize={12}
-                    />
-                    <YAxis 
-                      fontSize={12}
-                    />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'hsl(var(--background))',
-                        borderColor: 'hsl(var(--border))',
-                        color: 'hsl(var(--foreground))',
-                        fontSize: '12px'
-                      }}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="commits"
-                      stroke="#16a34c"
-                      strokeWidth={2}
-                      dot={{ 
-                        fill: "#16a34a", 
-                        r: 4,
-                        stroke: "hsl(var(--background))",
-                        strokeWidth: 1
-                      }}
-                      activeDot={{ 
-                        r: 5,
-                        fill: "#16a34a",
-                        stroke: "hsl(var(--background))",
-                        strokeWidth: 1
-                      }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </motion.div>
+        {/* Commits + Chart - Horizontal scroll container */}
+        <div className="overflow-x-auto pb-4">
+          <div className="grid lg:grid-cols-2 gap-4 min-w-[800px]">
+            {/* Chart */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+              className="min-w-[400px]"
+            >
+              <Card className="h-full">
+                <CardHeader className="pb-2">
+                  <CardTitle className="flex items-center gap-1.5 text-base">
+                    <Calendar className="w-3.5 h-3.5 text-green-600" />
+                    Commit Activity - {selectedYear}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={200}>
+                    <LineChart data={getCommitChartData()}>
+                      <XAxis 
+                        dataKey="month" 
+                        fontSize={12}
+                      />
+                      <YAxis 
+                        fontSize={12}
+                      />
+                      <Tooltip 
+                        contentStyle={{ 
+                          backgroundColor: 'hsl(var(--background))',
+                          borderColor: 'hsl(var(--border))',
+                          color: 'hsl(var(--foreground))',
+                          fontSize: '12px'
+                        }}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="commits"
+                        stroke="#16a34c"
+                        strokeWidth={2}
+                        dot={{ 
+                          fill: "#16a34a", 
+                          r: 4,
+                          stroke: "hsl(var(--background))",
+                          strokeWidth: 1
+                        }}
+                        activeDot={{ 
+                          r: 5,
+                          fill: "#16a34a",
+                          stroke: "hsl(var(--background))",
+                          strokeWidth: 1
+                        }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+            </motion.div>
 
-          {/* Recent Commits */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-          >
-            <Card className="h-full">
-              <CardHeader className="pb-2">
-                <CardTitle className="flex flex-col sm:flex-row sm:items-center gap-1.5 text-base">
-                  <div className="flex items-center gap-1.5">
-                    <GitCommit className="w-3.5 h-3.5 text-green-600" />
-                    Recent Commits - {selectedYear}
-                  </div>
-                  <span className="text-xs bg-green-500/10 text-green-600 px-2 py-1 rounded-full sm:ml-2">
-                    {getFilteredCommits().length} commits
-                  </span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-2">
-                <div className="space-y-2 max-h-60 overflow-y-auto">
-                  {getFilteredCommits().slice(0, 10).map((commit, index) => (
-                    <motion.div
-                      key={commit.sha}
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.05 }}
-                      className="flex items-start gap-2 p-2 rounded-md hover:bg-muted/50 transition-all group"
-                    >
-                      <div className="p-1 rounded-full bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400 shrink-0">
-                        <GitCommit className="w-3 h-3" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-xs truncate group-hover:text-green-600 transition-colors">
-                          {commit.commit.message}
-                        </p>
-                        <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
-                          <span className="text-xs px-1.5 py-0.5 bg-green-500/10 text-green-600 rounded-full">
-                            {commit.commit.author.name}
-                          </span>
-                          <span className="text-xs text-muted-foreground">
-                            {new Date(commit.commit.author.date).toLocaleDateString()}
-                          </span>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                  {getFilteredCommits().length === 0 && (
-                    <div className="text-center text-muted-foreground py-4 text-sm">
-                      No commits found for {selectedYear}
+            {/* Recent Commits */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+              className="min-w-[400px]"
+            >
+              <Card className="h-full">
+                <CardHeader className="pb-2">
+                  <CardTitle className="flex flex-col sm:flex-row sm:items-center gap-1.5 text-base">
+                    <div className="flex items-center gap-1.5">
+                      <GitCommit className="w-3.5 h-3.5 text-green-600" />
+                      Recent Commits - {selectedYear}
                     </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+                    <span className="text-xs bg-green-500/10 text-green-600 px-2 py-1 rounded-full sm:ml-2">
+                      {getFilteredCommits().length} commits
+                    </span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-2">
+                  <div className="space-y-2 max-h-60 overflow-y-auto">
+                    {getFilteredCommits().slice(0, 10).map((commit, index) => (
+                      <motion.div
+                        key={commit.sha}
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.05 }}
+                        className="flex items-start gap-2 p-2 rounded-md hover:bg-muted/50 transition-all group"
+                      >
+                        <div className="p-1 rounded-full bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400 shrink-0">
+                          <GitCommit className="w-3 h-3" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-xs truncate group-hover:text-green-600 transition-colors">
+                            {commit.commit.message}
+                          </p>
+                          <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                            <span className="text-xs px-1.5 py-0.5 bg-green-500/10 text-green-600 rounded-full">
+                              {commit.commit.author.name}
+                            </span>
+                            <span className="text-xs text-muted-foreground">
+                              {new Date(commit.commit.author.date).toLocaleDateString()}
+                            </span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                    {getFilteredCommits().length === 0 && (
+                      <div className="text-center text-muted-foreground py-4 text-sm">
+                        No commits found for {selectedYear}
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
         </div>
 
         {/* Motivation Section */}
@@ -645,3 +649,23 @@ export const GitHubActivity = () => {
     </section>
   );
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
