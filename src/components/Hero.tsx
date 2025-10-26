@@ -7,6 +7,32 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from "react";
 import { ParticleBackground } from "./ParticleBackground";
 
+// JSON Syntax Highlighting Component
+const JSONViewer = ({ data }: { data: string }) => {
+  const highlightJSON = (jsonString: string) => {
+    return jsonString
+      .replace(/"([^"]+)":/g, '<span class="text-blue-400">"$1"</span>:')
+      .replace(/: "([^"]+)"/g, ': <span class="text-green-400">"$1"</span>')
+      .replace(/: (\d+)/g, ': <span class="text-yellow-400">$1</span>')
+      .replace(/: (true|false)/g, ': <span class="text-purple-400">$1</span>')
+      .replace(/(\[[^\]]*\])/g, '<span class="text-pink-400">$1</span>')
+      .replace(/(\{|\})/g, '<span class="text-gray-300">$1</span>')
+      .replace(/(\[|\])/g, '<span class="text-gray-300">$1</span>')
+      .replace(/(,)/g, '<span class="text-gray-300">$1</span>');
+  };
+
+  return (
+    <div className="text-foreground font-mono text-sm leading-relaxed">
+      <pre 
+        className="whitespace-pre-wrap"
+        dangerouslySetInnerHTML={{ 
+          __html: highlightJSON(data) 
+        }} 
+      />
+    </div>
+  );
+};
+
 export const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -15,17 +41,36 @@ export const Hero = () => {
   }, []);
 
   const handleDownload = () => {
-    // Add your resume download logic here
     const link = document.createElement('a');
-    link.href = '/resume.pdf'; // Update with your resume path
+    link.href = '/Arbaaz.pdf';
     link.download = 'Arbaaz_Khan_Resume.pdf';
     link.click();
   };
 
   const handleViewResume = () => {
-    // Add your resume view logic here
-    window.open('/resume.pdf', '_blank');
+    window.open('/Arbaaz.pdf', '_blank');
   };
+
+  const jsonData = `{
+  "name": "Arbaaz Khan",
+  "title": "Software Engineer | Full Stack Developer",
+  "location": "New Delhi, India",
+  "experience": "1+ years",
+  "email": "arbaazkhanark23@gmail.com",
+  "phone": "+918287817916",
+  "skills": [
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "Node.js",
+    "MongoDB",
+    "PostgreSQL",
+    "Express",
+    "Redis",
+    "RabbitMQ"
+  ],
+  "currentRole": "Software Engineer at Earnest Data Analytics"
+}`;
 
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-20 px-4 overflow-hidden bg-background">
@@ -79,7 +124,7 @@ export const Hero = () => {
               transition={{ delay: 0.5 }}
               className="text-lg text-muted-foreground max-w-xl leading-relaxed"
             >
-              1+ years of experience as a Full-Stack Developer with expertise in building scalable and high-performance web applications.
+              Having 1+ years of experience as a Full-Stack Developer with expertise in designing, developing, testing, and deploying web-based applications.
             </motion.p>
 
             <motion.div 
@@ -110,12 +155,41 @@ export const Hero = () => {
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                <span>1+ years experience</span>
+                <span>23 October, 2001</span>
               </div>
               <div className="flex items-center gap-2">
                 <Briefcase className="w-4 h-4" />
                 <span>Software Engineer at Earnest Data Analytics</span>
               </div>
+              <div className="flex items-center gap-2">
+                <Mail className="w-4 h-4" />
+                <span>arbaazkhanark23@gmail.com</span>
+              </div>
+            </motion.div>
+
+            {/* Social Links */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+              className="flex gap-4 pt-4"
+            >
+              <a 
+                href="https://linkedin.com/in/arbaz-khan-0bb1aa1a0" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                LinkedIn
+              </a>
+              <a 
+                href="https://github.com/Arbazkhanark" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                GitHub
+              </a>
             </motion.div>
           </motion.div>
 
@@ -126,33 +200,44 @@ export const Hero = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="hidden lg:block"
           >
-            <div className="bg-card border border-border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
-              <div className="bg-secondary px-4 py-2 flex items-center gap-2 border-b border-border">
-                <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+            <div className="bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-lg overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-[1.02] group">
+              {/* Window Header */}
+              <div className="bg-gray-800 px-4 py-3 flex items-center justify-between border-b border-gray-700">
+                <div className="flex items-center gap-3">
+                  <div className="flex gap-2">
+                    <div className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 transition-colors cursor-pointer"></div>
+                    <div className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 transition-colors cursor-pointer"></div>
+                    <div className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 transition-colors cursor-pointer"></div>
+                  </div>
+                  <span className="text-sm text-gray-300 font-medium">ArbaazKhan.json</span>
                 </div>
-                <span className="text-sm text-muted-foreground ml-2">ArbaazKhan.json</span>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-gray-600"></div>
+                  <div className="w-2 h-2 rounded-full bg-gray-600"></div>
+                  <div className="w-2 h-2 rounded-full bg-gray-600"></div>
+                </div>
               </div>
-              <div className="p-6 font-mono text-sm">
-                <pre className="text-foreground">
-{`{
-  "name": "Arbaaz Khan",
-  "title": "Software Engineer | Full Stack Developer",
-  "location": "New Delhi, India",
-  "experience": "1+ years",
-  "skills": [
-    "JavaScript",
-    "TypeScript",
-    "React",
-    "Next.js",
-    "Node.js",
-    "MongoDB"
-  ],
-  "currentStatus": "Software Engineer at Earnest Data Analytics"
-}`}
-                </pre>
+              
+              {/* JSON Content */}
+              <div className="p-6 bg-gradient-to-br from-gray-900 to-gray-800 relative overflow-hidden">
+                {/* Animated background effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                
+                <div className="relative z-10">
+                  <JSONViewer data={jsonData} />
+                </div>
+              </div>
+
+              {/* Status Bar */}
+              <div className="bg-gray-800 px-4 py-2 border-t border-gray-700 flex items-center justify-between text-xs text-gray-400">
+                <div className="flex items-center gap-4">
+                  <span>JSON</span>
+                  <span>UTF-8</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span>Ln 14, Col 1</span>
+                  <span>Spaces: 2</span>
+                </div>
               </div>
             </div>
           </motion.div>
