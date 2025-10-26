@@ -1,43 +1,163 @@
-'use client';
+"use client";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Github, ArrowRight, Sparkles } from "lucide-react";
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { ExternalLink, Github, ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef, useState } from "react";
+import Image from "next/image";
 
 const projects = [
   {
     title: "Anime Merch E-Commerce Platform",
-    description: "A full-stack e-commerce application for anime merchandise sales with advanced features and admin dashboard.",
-    tags: ["Next.js", "Node.js", "MongoDB", "Vercel", "TypeScript"],
+    description:
+      "A full-stack e-commerce application for anime merchandise sales with advanced features and admin dashboard.",
+    tags: [
+      "Next.js",
+      "Node.js",
+      "MongoDB",
+      "Vercel",
+      "TypeScript",
+      "REST APIs",
+      "Express.js",
+      "Tailwind CSS",
+      "Framer Motion",
+      "JWT Authentication",
+      "Razorpay Integration",
+      "Admin Dashboard",
+      "Responsive Design",
+      "Git",
+      "GitHub",
+    ],
     featured: true,
-    demoLink: "#",
-    githubLink: "#",
+    demoLink: "https://github.com/Arbazkhanark/OtakuArc-Backend",
+    githubLink: "https://github.com/Arbazkhanark/OtakuArc-Backend",
     emoji: "🛒",
+    image: "/api/placeholder/400/250",
     gradient: "from-green-500/20 to-blue-500/20",
-    delay: 0.1
+    delay: 0.1,
   },
   {
     title: "MuscleSharks Website",
-    description: "E-commerce platform with comprehensive product catalog, order tracking, and seamless payment integration.",
+    description:
+      "E-commerce platform with comprehensive product catalog, order tracking, and seamless payment integration.",
     tags: ["React", "Node.js", "Express", "MongoDB", "REST APIs"],
     featured: true,
-    demoLink: "#",
-    githubLink: "#",
+    demoLink: "https://ms-server-six.vercel.app/",
+    githubLink: "https://github.com/Arbazkhanark/MuscleSharks",
     emoji: "💪",
+    image: "https://i.postimg.cc/vTRpPhZY/Screenshot-2025-10-26-at-5-06-40-PM.png",
     gradient: "from-green-500/20 to-blue-500/20",
-    delay: 0.2
+    delay: 0.2,
+  },
+  {
+    title: "Fashion Consultation Platform",
+    description:
+      "A platform where users can book fashion design consultations, video calls, and real meetings for personalized fashion guidance.",
+    tags: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Vercel",
+      "React",
+      "Booking System",
+    ],
+    featured: true,
+    demoLink: "https://fashion-platform-nine.vercel.app/",
+    githubLink: "https://github.com/Arbazkhanark/fashion-platform",
+    emoji: "🎨",
+    image: "https://i.postimg.cc/2STBdXS5/Screenshot-2025-10-26-at-4-51-56-PM.png",
+    gradient: "from-purple-500/20 to-pink-500/20",
+    delay: 0.3,
+  },
+  {
+    title: "MLSA College Club Website",
+    description:
+      "Official website for Microsoft Learn Student Ambassadors club with events, team showcase and resources.",
+    tags: ["Next.js", "TypeScript", "Tailwind CSS", "Vercel", "Framer Motion"],
+    featured: true,
+    demoLink: "https://mlsa-three.vercel.app/",
+    githubLink: "https://github.com/Arbazkhanark/MLSA",
+    emoji: "🚀",
+    image: "https://i.postimg.cc/bv3HJwt5/Screenshot-2025-10-26-at-4-58-55-PM.png",
+    gradient: "from-blue-500/20 to-cyan-500/20",
+    delay: 0.4,
+  },
+  {
+    title: "Republic News Portal",
+    description:
+      "Client project - News portal website with article management, categories, and modern UI design.",
+    tags: ["Next.js", "JavaScript", "CSS", "Vercel", "News API"],
+    featured: false,
+    demoLink: "https://republic-news-doea.vercel.app/",
+    githubLink: "https://github.com/Arbazkhanark/RepublicNews",
+    emoji: "📰",
+    image: "https://i.postimg.cc/PqxK1Dhb/Screenshot-2025-10-26-at-5-00-10-PM.png",
+    gradient: "from-orange-500/20 to-red-500/20",
+    delay: 0.5,
+  },
+  {
+    title: "Namaste DSA - Coding Repository",
+    description:
+      "Comprehensive Data Structures and Algorithms repository with solutions, explanations and practice problems.",
+    tags: [
+      "Strings",
+      "Arrays",
+      "Linked List",
+      "Hashing",
+      "Stacks",
+      "Queues",
+      "Binary Search",
+      "Two Pointer/Sliding Window",
+      "Heap/Priority Queue",
+      "Backtracking",
+      "Graphs",
+      "Greedy Algo",
+      "DP",
+      "Binary Tree",
+      "Tries",
+      "C++",
+      "Algorithms",
+      "Data Structures",
+      "Git",
+      "Problem Solving",
+    ],
+    featured: false,
+    demoLink: "https://github.com/Arbazkhanark/Namaste-DSA",
+    githubLink: "https://github.com/Arbazkhanark/Namaste-DSA",
+    emoji: "💻",
+    image: null,
+    gradient: "from-yellow-500/20 to-amber-500/20",
+    delay: 0.6,
   },
 ];
 
 export const Projects = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const [expandedProjects, setExpandedProjects] = useState<Set<number>>(new Set());
+
+  const toggleProjectExpansion = (index: number) => {
+    setExpandedProjects(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(index)) {
+        newSet.delete(index);
+      } else {
+        newSet.add(index);
+      }
+      return newSet;
+    });
+  };
+
+  const isExpanded = (index: number) => expandedProjects.has(index);
 
   return (
-    <section id="projects" className="py-8 px-4 bg-blue-50 dark:bg-blue-950/20 relative overflow-hidden" ref={ref}>
+    <section
+      id="projects"
+      className="py-8 px-4 bg-blue-50 dark:bg-blue-950/20 relative overflow-hidden"
+      ref={ref}
+    >
       {/* Background Elements */}
       <motion.div
         className="absolute top-1/4 left-5 w-24 h-24 bg-green-500/10 rounded-full blur-3xl"
@@ -75,11 +195,12 @@ export const Projects = () => {
         >
           <h2 className="text-2xl font-bold mb-2">Featured Projects</h2>
           <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-            A showcase of my recent work and the technologies I&apos;ve used to bring ideas to life
+            A showcase of my recent work and the technologies I&apos;ve used to
+            bring ideas to life
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
           {projects.map((project, index) => (
             <motion.div
               key={index}
@@ -87,45 +208,110 @@ export const Projects = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
-              whileHover={{ 
+              whileHover={{
                 y: -5,
               }}
               className="group relative"
             >
-              <div className="bg-white dark:bg-gray-900 border border-green-500/10 rounded-xl overflow-hidden hover:border-green-500/30 transition-all duration-300 group-hover:shadow-md relative">
-                <div className="relative overflow-hidden">
-                  <motion.div
-                    className={`aspect-video bg-gradient-to-br ${project.gradient} flex items-center justify-center relative`}
-                  >
+              <div 
+                className="bg-white dark:bg-gray-900 border border-green-500/10 rounded-xl overflow-hidden hover:border-green-500/30 transition-all duration-300 group-hover:shadow-md relative h-full flex flex-col cursor-pointer"
+                onClick={() => toggleProjectExpansion(index)}
+              >
+                <div className="relative overflow-hidden flex-grow-0">
+                  {project.image ? (
+                    <div className="aspect-video relative">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          const parent = target.parentElement;
+                          if (parent) {
+                            const fallback = document.createElement('div');
+                            fallback.className = `absolute inset-0 bg-gradient-to-br ${project.gradient} flex items-center justify-center`;
+                            fallback.innerHTML = `<div class="text-4xl opacity-70">${project.emoji}</div>`;
+                            parent.appendChild(fallback);
+                          }
+                        }}
+                      />
+                      
+                      <motion.div
+                        className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+                        whileHover={{ opacity: 1 }}
+                      >
+                        <motion.div
+                          className="flex gap-2"
+                          initial={{ opacity: 0, y: 10 }}
+                          whileHover={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <Button
+                            asChild
+                            variant="secondary"
+                            size="sm"
+                            className="gap-1 backdrop-blur-sm text-xs"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <a
+                              href={project.demoLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <ExternalLink className="w-3 h-3" />
+                              Preview
+                            </a>
+                          </Button>
+                        </motion.div>
+                      </motion.div>
+                    </div>
+                  ) : (
                     <motion.div
-                      animate={{ y: [0, -8, 0] }}
-                      transition={{ duration: 3, repeat: Infinity }}
-                      className="text-4xl opacity-70"
-                    >
-                      {project.emoji}
-                    </motion.div>
-
-                    {/* Hover Overlay */}
-                    <motion.div
-                      className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
-                      whileHover={{ opacity: 1 }}
+                      className={`aspect-video bg-gradient-to-br ${project.gradient} flex items-center justify-center relative`}
                     >
                       <motion.div
-                        className="flex gap-2"
-                        initial={{ opacity: 0, y: 10 }}
-                        whileHover={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.2 }}
+                        animate={{ y: [0, -8, 0] }}
+                        transition={{ duration: 3, repeat: Infinity }}
+                        className="text-4xl opacity-70"
                       >
-                        <Button variant="secondary" size="sm" className="gap-1 backdrop-blur-sm text-xs">
-                          <ExternalLink className="w-3 h-3" />
-                          Preview
-                        </Button>
+                        {project.emoji}
+                      </motion.div>
+
+                      <motion.div
+                        className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+                        whileHover={{ opacity: 1 }}
+                      >
+                        <motion.div
+                          className="flex gap-2"
+                          initial={{ opacity: 0, y: 10 }}
+                          whileHover={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <Button
+                            asChild
+                            variant="secondary"
+                            size="sm"
+                            className="gap-1 backdrop-blur-sm text-xs"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <a
+                              href={project.demoLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <ExternalLink className="w-3 h-3" />
+                              Preview
+                            </a>
+                          </Button>
+                        </motion.div>
                       </motion.div>
                     </motion.div>
-                  </motion.div>
+                  )}
                 </div>
 
-                <div className="p-4 space-y-3 relative">
+                <div className="p-4 space-y-3 relative flex-grow">
                   {/* Featured Badge */}
                   {project.featured && (
                     <motion.div
@@ -154,40 +340,87 @@ export const Projects = () => {
                     {project.description}
                   </p>
 
-                  <div className="flex flex-wrap gap-1">
-                    {project.tags.map((tag, tagIndex) => (
-                      <motion.div
-                        key={tag}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.4 + tagIndex * 0.05 }}
-                      >
-                        <Badge 
-                          className="text-xs bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20 group-hover:border-green-500/40"
+                  {/* Tags Section */}
+                  <div className="space-y-2">
+                    <div className="flex flex-wrap gap-1">
+                      {project.tags.slice(0, isExpanded(index) ? project.tags.length : 4).map((tag, tagIndex) => (
+                        <motion.div
+                          key={tag}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: 0.4 + tagIndex * 0.05 }}
                         >
-                          {tag}
-                        </Badge>
+                          <Badge className="text-xs bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20 group-hover:border-green-500/40">
+                            {tag}
+                          </Badge>
+                        </motion.div>
+                      ))}
+                    </div>
+
+                    {/* Show More/Less Button */}
+                    {project.tags.length > 4 && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="flex justify-center"
+                      >
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-xs h-6 text-green-600 hover:text-green-700 hover:bg-green-500/10"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleProjectExpansion(index);
+                          }}
+                        >
+                          {isExpanded(index) ? (
+                            <>
+                              Show Less
+                              <ChevronUp className="w-3 h-3 ml-1" />
+                            </>
+                          ) : (
+                            <>
+                              +{project.tags.length - 4} more
+                              <ChevronDown className="w-3 h-3 ml-1" />
+                            </>
+                          )}
+                        </Button>
                       </motion.div>
-                    ))}
+                    )}
                   </div>
 
-                  <div className="flex gap-2 pt-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
+                  {/* Action Buttons */}
+                  <div className="flex gap-2 pt-2 mt-auto" onClick={(e) => e.stopPropagation()}>
+                    <Button
+                      asChild
+                      variant="outline"
+                      size="sm"
                       className="gap-1 text-xs h-8"
                     >
-                      <Github className="w-3 h-3" />
-                      Code
+                      <a
+                        href={project.githubLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Github className="w-3 h-3" />
+                        Code
+                      </a>
                     </Button>
-                    <Button 
-                      size="sm" 
+                    <Button
+                      asChild
+                      size="sm"
                       className="gap-1 text-xs h-8 bg-green-600 hover:bg-green-700"
                     >
-                      <ExternalLink className="w-3 h-3" />
-                      Live Demo
-                      <ArrowRight className="w-3 h-3" />
+                      <a
+                        href={project.demoLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                        Live Demo
+                        <ArrowRight className="w-3 h-3" />
+                      </a>
                     </Button>
                   </div>
                 </div>
@@ -205,29 +438,41 @@ export const Projects = () => {
           className="text-center"
         >
           <div className="bg-gradient-to-r from-green-500/5 to-blue-500/5 border border-green-500/20 rounded-lg p-4 mb-4">
-            <h3 className="text-base font-bold mb-1">Building Real Solutions</h3>
+            <h3 className="text-base font-bold mb-1">
+              Building Real Solutions
+            </h3>
             <p className="text-muted-foreground text-xs mb-2">
               Creating practical applications that solve real-world problems
             </p>
             <div className="flex justify-center gap-4 text-xs">
               <div className="text-center">
-                <div className="text-lg font-bold text-green-500">2</div>
+                <div className="text-lg font-bold text-green-500">
+                  {projects.filter((p) => p.featured).length}
+                </div>
                 <div className="text-muted-foreground">Featured</div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-bold text-blue-500">5+</div>
+                <div className="text-lg font-bold text-blue-500">
+                  {projects.reduce((acc, proj) => acc + proj.tags.length, 0)}
+                </div>
                 <div className="text-muted-foreground">Technologies</div>
               </div>
               <div className="text-center">
                 <div className="text-lg font-bold text-yellow-500">100%</div>
                 <div className="text-muted-foreground">Functional</div>
               </div>
+              <div className="text-center">
+                <div className="text-lg font-bold text-purple-500">
+                  {projects.length}
+                </div>
+                <div className="text-muted-foreground">Projects</div>
+              </div>
             </div>
           </div>
 
-          <Button 
-            variant="outline" 
-            size="lg" 
+          <Button
+            variant="outline"
+            size="lg"
             className="gap-2 border-green-500/20 hover:border-green-500/40"
           >
             <span>View All Projects</span>
