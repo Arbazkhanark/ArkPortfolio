@@ -244,16 +244,18 @@ export const Hero = () => {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
+      {/* Scroll Indicator - Fixed Positioning */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50"
       >
         <div className="flex flex-col items-center gap-2">
-          <span className="text-sm text-muted-foreground">Scroll to explore</span>
-          <div className="w-6 h-10 border-2 border-border rounded-full flex justify-center">
+          <span className="text-sm text-muted-foreground bg-background/80 backdrop-blur-sm px-3 py-1 rounded-full border border-border/50">
+            Scroll to explore
+          </span>
+          <div className="w-6 h-10 border-2 border-border/50 rounded-full flex justify-center bg-background/80 backdrop-blur-sm">
             <motion.div
               animate={{ y: [0, 12, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
