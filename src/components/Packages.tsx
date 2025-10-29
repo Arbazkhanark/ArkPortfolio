@@ -1,9 +1,65 @@
-'use client';
+"use client";
 
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { Package, Code, Zap, Shield, RotateCcw, Download, ExternalLink, Star, Users, GitBranch, Copy, Check, Play, Square } from "lucide-react";
+import {
+  Package,
+  Code,
+  Zap,
+  Shield,
+  RotateCcw,
+  Download,
+  ExternalLink,
+  Star,
+  Users,
+  GitBranch,
+  Copy,
+  Check,
+  Play,
+  Square,
+} from "lucide-react";
 import { useState } from "react";
+
+// Type definitions
+interface LogMetadata {
+  [key: string]: string | number | boolean | object | null | undefined;
+}
+
+interface LogExample {
+  type: string;
+  color: string;
+  bgColor: string;
+  borderColor: string;
+  time: string;
+  message: string;
+  traceId: string;
+  functionName: string;
+  metadata: LogMetadata;
+}
+
+// Lucide icon type definition
+type LucideIcon = React.ComponentType<{
+  className?: string;
+  size?: number | string;
+}>;
+
+interface Feature {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+}
+
+interface Stat {
+  icon: LucideIcon;
+  label: string;
+  value: string;
+  color: string;
+}
+
+interface CodeExample {
+  language: string;
+  code: string;
+}
 
 export const NpmPackage = () => {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
@@ -20,7 +76,7 @@ export const NpmPackage = () => {
   };
 
   // Colorful log examples with proper formatting
-  const logExamples = [
+  const logExamples: LogExample[] = [
     {
       type: "INFO",
       color: "text-blue-400",
@@ -30,7 +86,7 @@ export const NpmPackage = () => {
       message: "Server started on port 3000",
       traceId: "c01b8cd6-c0df-4632-a880-24597a8a74d5",
       functionName: "Server/start",
-      metadata: {}
+      metadata: {},
     },
     {
       type: "DEBUG",
@@ -41,7 +97,7 @@ export const NpmPackage = () => {
       message: "User registering Process",
       traceId: "d1f63ce0-12a5-4486-938d-d8f39e8a5ee7",
       functionName: "AuthController/registerUser",
-      metadata: { body: { email: "invalid-email" } }
+      metadata: { body: { email: "invalid-email" } },
     },
     {
       type: "INFO",
@@ -59,8 +115,8 @@ export const NpmPackage = () => {
         responseTime: "10ms",
         ip: "::1",
         queries: "{}",
-        sendData: '"Invalid email"'
-      }
+        sendData: '"Invalid email"',
+      },
     },
     {
       type: "ERROR",
@@ -71,7 +127,7 @@ export const NpmPackage = () => {
       message: "Database connection failed",
       traceId: "e2g74df1-23b6-5597-a991-e4h50b9b6ff8",
       functionName: "Database/connect",
-      metadata: { error: "Connection timeout", retryCount: 3 }
+      metadata: { error: "Connection timeout", retryCount: 3 },
     },
     {
       type: "WARN",
@@ -82,68 +138,70 @@ export const NpmPackage = () => {
       message: "High memory usage detected",
       traceId: "f3h85eg2-34c7-6608-baa2-f5i61c0c7gg9",
       functionName: "SystemMonitor/checkMemory",
-      metadata: { memoryUsage: "85%", threshold: "80%" }
-    }
+      metadata: { memoryUsage: "85%", threshold: "80%" },
+    },
   ];
 
-  const features = [
+  const features: Feature[] = [
     {
       icon: Zap,
       title: "High Performance",
-      description: "Lightweight and optimized for production Node.js applications"
+      description:
+        "Lightweight and optimized for production Node.js applications",
     },
     {
       icon: Shield,
       title: "Circuit Breaker",
-      description: "Automatic log disabling during system failures to prevent overload"
+      description:
+        "Automatic log disabling during system failures to prevent overload",
     },
     {
       icon: RotateCcw,
       title: "Smart Log Rotation",
-      description: "Size-based file rotation to prevent disk space issues"
+      description: "Size-based file rotation to prevent disk space issues",
     },
     {
       icon: Code,
       title: "TypeScript Ready",
-      description: "Built with TypeScript for full type safety and better DX"
-    }
+      description: "Built with TypeScript for full type safety and better DX",
+    },
   ];
 
-  const stats = [
+  const stats: Stat[] = [
     {
       icon: Download,
       label: "Weekly Downloads",
       value: "500+",
-      color: "text-green-500"
+      color: "text-green-500",
     },
     {
       icon: Star,
       label: "NPM Rating",
       value: "4.8/5",
-      color: "text-yellow-500"
+      color: "text-yellow-500",
     },
     {
       icon: GitBranch,
       label: "Version",
       value: "v1.2.0",
-      color: "text-blue-500"
+      color: "text-blue-500",
     },
     {
       icon: Users,
       label: "Active Users",
       value: "100+",
-      color: "text-purple-500"
-    }
+      color: "text-purple-500",
+    },
   ];
 
-  const codeExamples = [
+  const codeExamples: CodeExample[] = [
     {
       language: "JavaScript",
       code: `const { Logger } = require('patal-log');
 const logger = new Logger();
 
 logger.info('Application started successfully');
-logger.error('Database connection failed', { error: err });`
+logger.error('Database connection failed', { error: err });`,
     },
     {
       language: "TypeScript",
@@ -155,7 +213,7 @@ const logger = new Logger({
 });
 
 logger.debug('Debug message');
-logger.warn('Warning message', { context: 'auth' });`
+logger.warn('Warning message', { context: 'auth' });`,
     },
     {
       language: "Express Middleware",
@@ -166,11 +224,11 @@ app.use(expressMiddleware({
   logRequestBody: false
 }));
 
-// All HTTP requests automatically tracked`
-    }
+// All HTTP requests automatically tracked`,
+    },
   ];
 
-  const formatMetadata = (metadata: any) => {
+  const formatMetadata = (metadata: LogMetadata) => {
     return JSON.stringify(metadata, null, 2);
   };
 
@@ -179,7 +237,10 @@ app.use(expressMiddleware({
   };
 
   return (
-    <section id="npm-package" className="py-16 sm:py-20 px-3 sm:px-4 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-950/20 relative overflow-hidden">
+    <section
+      id="npm-package"
+      className="py-16 sm:py-20 px-3 sm:px-4 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-950/20 relative overflow-hidden"
+    >
       {/* Background Elements */}
       <motion.div
         className="absolute top-10 right-10 w-20 h-20 bg-green-500/10 rounded-full blur-2xl"
@@ -193,7 +254,7 @@ app.use(expressMiddleware({
           ease: "easeInOut",
         }}
       />
-      
+
       <motion.div
         className="absolute bottom-10 left-10 w-16 h-16 bg-blue-500/10 rounded-full blur-2xl"
         animate={{
@@ -204,7 +265,7 @@ app.use(expressMiddleware({
           duration: 5,
           repeat: Infinity,
           ease: "easeInOut",
-          delay: 1
+          delay: 1,
         }}
       />
 
@@ -226,11 +287,11 @@ app.use(expressMiddleware({
           >
             <Package className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
           </motion.div>
-          
+
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
             Patal Log
           </h2>
-          
+
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -238,8 +299,9 @@ app.use(expressMiddleware({
             transition={{ delay: 0.4 }}
             className="text-lg sm:text-xl text-muted-foreground max-w-4xl mx-auto mb-6 leading-relaxed"
           >
-            A powerful, production-ready logging library for Node.js with structured logging, 
-            circuit breaker protection, and automatic log rotation.
+            A powerful, production-ready logging library for Node.js with
+            structured logging, circuit breaker protection, and automatic log
+            rotation.
           </motion.p>
 
           {/* Package Info */}
@@ -252,7 +314,7 @@ app.use(expressMiddleware({
           >
             <div className="relative">
               <code className="bg-gray-900 text-green-400 px-4 py-3 rounded-lg text-sm sm:text-base font-mono border border-gray-700">
-                npm install patal-log
+                npm install patal-log ..
               </code>
               <motion.button
                 onClick={() => copyToClipboard("npm install patal-log", -1)}
@@ -268,7 +330,7 @@ app.use(expressMiddleware({
                 )}
               </motion.button>
             </div>
-            
+
             <div className="flex gap-3">
               <motion.a
                 href="https://www.npmjs.com/package/patal-log"
@@ -281,7 +343,7 @@ app.use(expressMiddleware({
                 <ExternalLink className="w-4 h-4" />
                 View on NPM
               </motion.a>
-              
+
               <motion.a
                 href="https://github.com/Arbazkhanark/trace-logger"
                 target="_blank"
@@ -316,13 +378,19 @@ app.use(expressMiddleware({
             >
               <Card className="text-center hover:shadow-lg transition-all duration-300 border border-green-500/20 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm">
                 <CardContent className="p-4 sm:p-6">
-                  <div className={`inline-flex p-2 sm:p-3 rounded-xl bg-gradient-to-br from-green-500/10 to-blue-500/5 mb-2 sm:mb-3 ${stat.color}`}>
+                  <div
+                    className={`inline-flex p-2 sm:p-3 rounded-xl bg-gradient-to-br from-green-500/10 to-blue-500/5 mb-2 sm:mb-3 ${stat.color}`}
+                  >
                     <stat.icon className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
-                  <div className={`text-2xl sm:text-3xl font-bold mb-1 ${stat.color}`}>
+                  <div
+                    className={`text-2xl sm:text-3xl font-bold mb-1 ${stat.color}`}
+                  >
                     {stat.value}
                   </div>
-                  <p className="text-xs sm:text-sm text-muted-foreground">{stat.label}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    {stat.label}
+                  </p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -337,8 +405,10 @@ app.use(expressMiddleware({
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-foreground">Key Features</h3>
-            
+            <h3 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-foreground">
+              Key Features
+            </h3>
+
             <div className="space-y-4 sm:space-y-6">
               {features.map((feature, index) => (
                 <motion.div
@@ -374,18 +444,24 @@ app.use(expressMiddleware({
             transition={{ duration: 0.6 }}
           >
             <div className="flex items-center justify-between mb-6 sm:mb-8">
-              <h3 className="text-2xl sm:text-3xl font-bold text-foreground">Live Log Preview</h3>
+              <h3 className="text-2xl sm:text-3xl font-bold text-foreground">
+                Live Log Preview
+              </h3>
               <motion.button
                 onClick={toggleLogPlay}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm font-medium"
               >
-                {isPlaying ? <Square className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                {isPlaying ? (
+                  <Square className="w-4 h-4" />
+                ) : (
+                  <Play className="w-4 h-4" />
+                )}
                 {isPlaying ? "Stop" : "Play"} Demo
               </motion.button>
             </div>
-            
+
             <div className="space-y-3">
               {logExamples.map((log, index) => (
                 <motion.div
@@ -397,25 +473,34 @@ app.use(expressMiddleware({
                   className={`p-4 rounded-lg border ${log.bgColor} ${log.borderColor} font-mono text-sm hover:shadow-md transition-all duration-300`}
                 >
                   <div className="flex items-start gap-3 mb-2">
-                    <span className={`px-2 py-1 rounded text-xs font-bold ${log.color} bg-black/20`}>
+                    <span
+                      className={`px-2 py-1 rounded text-xs font-bold ${log.color} bg-black/20`}
+                    >
                       {log.type}
                     </span>
-                    <span className="text-gray-400 text-xs">{formatTime(log.time)}</span>
-                    <span className="text-purple-400 text-xs flex-1 truncate" title={log.traceId}>
+                    <span className="text-gray-400 text-xs">
+                      {formatTime(log.time)}
+                    </span>
+                    <span
+                      className="text-purple-400 text-xs flex-1 truncate"
+                      title={log.traceId}
+                    >
                       {log.traceId}
                     </span>
                   </div>
-                  
+
                   <div className="mb-2">
                     <span className="text-white">{log.message}</span>
                   </div>
-                  
+
                   <div className="text-xs space-y-1">
                     <div>
                       <span className="text-cyan-400">Function: </span>
-                      <span className="text-yellow-300">{log.functionName}</span>
+                      <span className="text-yellow-300">
+                        {log.functionName}
+                      </span>
                     </div>
-                    
+
                     {Object.keys(log.metadata).length > 0 && (
                       <div>
                         <span className="text-cyan-400">Metadata: </span>
@@ -431,7 +516,9 @@ app.use(expressMiddleware({
 
             {/* Log Legend */}
             <div className="mt-6 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
-              <h4 className="text-white font-semibold mb-3 text-sm">Log Level Colors:</h4>
+              <h4 className="text-white font-semibold mb-3 text-sm">
+                Log Level Colors:
+              </h4>
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-blue-400 rounded"></div>
@@ -466,8 +553,10 @@ app.use(expressMiddleware({
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-12 sm:mt-16"
         >
-          <h3 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-foreground">Quick Start</h3>
-          
+          <h3 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-foreground">
+            Quick Start
+          </h3>
+
           <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
             {codeExamples.map((example, index) => (
               <motion.div
@@ -483,7 +572,9 @@ app.use(expressMiddleware({
                     <div className="w-3 h-3 rounded-full bg-red-500"></div>
                     <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                     <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                    <span className="text-xs text-gray-400 ml-2">{example.language}</span>
+                    <span className="text-xs text-gray-400 ml-2">
+                      {example.language}
+                    </span>
                   </div>
                   <motion.button
                     onClick={() => copyToClipboard(example.code, index)}
@@ -525,11 +616,15 @@ app.use(expressMiddleware({
             <CardContent className="p-6 sm:p-8">
               <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
                 <div>
-                  <h4 className="text-xl sm:text-2xl font-bold mb-4 text-foreground">Why Patal Log?</h4>
+                  <h4 className="text-xl sm:text-2xl font-bold mb-4 text-foreground">
+                    Why Patal Log?
+                  </h4>
                   <ul className="space-y-3 text-muted-foreground">
                     <li className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span>Zero configuration setup with sensible defaults</span>
+                      <span>
+                        Zero configuration setup with sensible defaults
+                      </span>
                     </li>
                     <li className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -537,7 +632,9 @@ app.use(expressMiddleware({
                     </li>
                     <li className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span>Built-in Express.js middleware for HTTP tracking</span>
+                      <span>
+                        Built-in Express.js middleware for HTTP tracking
+                      </span>
                     </li>
                     <li className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -545,9 +642,11 @@ app.use(expressMiddleware({
                     </li>
                   </ul>
                 </div>
-                
+
                 <div>
-                  <h4 className="text-xl sm:text-2xl font-bold mb-4 text-foreground">Perfect For</h4>
+                  <h4 className="text-xl sm:text-2xl font-bold mb-4 text-foreground">
+                    Perfect For
+                  </h4>
                   <ul className="space-y-3 text-muted-foreground">
                     <li className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -585,7 +684,8 @@ app.use(expressMiddleware({
               Ready to enhance your logging?
             </h3>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Start using Patal Log in your Node.js projects today and experience production-ready logging with zero hassle.
+              Start using Patal Log in your Node.js projects today and
+              experience production-ready logging with zero hassle.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a
@@ -599,7 +699,7 @@ app.use(expressMiddleware({
                 <Download className="w-5 h-5" />
                 Install via NPM
               </motion.a>
-              
+
               <motion.a
                 href="https://github.com/Arbazkhanark/trace-logger"
                 target="_blank"
@@ -618,4 +718,3 @@ app.use(expressMiddleware({
     </section>
   );
 };
-
